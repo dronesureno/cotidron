@@ -314,26 +314,26 @@
                 </section>
             </div>
 
-            <!-- Right Summary Column (Designed like the clean corporate PDF template) -->
+            <!-- Right Summary Column -->
             <div class="lg:col-span-6">
                 <div class="sticky top-20 space-y-4">
                     <div id="quoteCard" class="bg-white text-slate-900 border border-slate-200 rounded-2xl p-8 shadow-2xl print-container relative overflow-hidden">
                         
-                        <!-- Top Decorative Header Bar (Blue Theme) -->
+                        <!-- Top Decorative Header Bar -->
                         <div class="absolute top-0 left-0 right-0 h-3 bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-800"></div>
 
                         <!-- Header: Logo & Title -->
                         <div class="flex justify-between items-start pt-3 pb-6 border-b border-slate-200 mb-6">
-                            <div class="flex items-center gap-3">
-                                <div id="cardLogoContainer" class="w-12 h-12 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center overflow-hidden shrink-0 hidden">
-                                    <img id="cardLogoImg" src="" alt="Logo" class="w-full h-full object-cover">
+                            <div class="flex items-center gap-3.5">
+                                <div id="cardLogoContainer" class="w-14 h-14 rounded-xl border border-slate-200 flex items-center justify-center overflow-hidden shrink-0 bg-slate-50 hidden">
+                                    <img id="cardLogoImg" src="" alt="Logo" class="w-full h-full object-contain">
                                 </div>
                                 <div id="cardDefaultLogo" class="w-12 h-12 rounded-xl bg-blue-900 text-white flex items-center justify-center font-bold text-xl shadow-md">
                                     <i class="fa-solid fa-helicopter"></i>
                                 </div>
                                 <div>
                                     <h2 class="text-xl font-extrabold text-blue-950 tracking-tight">Cotización de Servicios</h2>
-                                    <p class="text-xs font-semibold text-blue-700 uppercase tracking-widest mt-0.5">Cotidron Pro</p>
+                                    <p id="summaryBrandSubtitle" class="text-xs font-semibold text-blue-700 uppercase tracking-widest mt-0.5">DRONE SERVICE</p>
                                 </div>
                             </div>
                             <div class="text-right">
@@ -407,7 +407,7 @@
                                 <p class="text-slate-700">• Reserva de fecha con 50% de abono y 50% contra entrega final.</p>
                             </div>
                             <div class="pt-3 border-t border-slate-100 grid grid-cols-2 gap-2 text-slate-500">
-                                <p id="footerPhone"><i class="fa-solid fa-phone mr-1 text-blue-600"></i> +56 9 1234 5678</p>
+                                <p id="footerPhone"><i class="fa-solid fa-phone mr-1 text-blue-600"></i> +56 9 ...</p>
                                 <p id="footerSocial"><i class="fa-solid fa-globe mr-1 text-blue-600"></i> @dronesureno</p>
                             </div>
                         </div>
@@ -497,8 +497,8 @@
                     <input type="text" id="providerSocialInput" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500">
                 </div>
                 <div>
-                    <label class="block text-slate-300 mb-1">URL / Enlace del Logo (Opcional)</label>
-                    <input type="text" id="providerLogoInput" placeholder="Ej: https://imgur.com/tu-logo.png" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500">
+                    <label class="block text-slate-300 mb-1">Subir Logo desde el Dispositivo (PC / Celular)</label>
+                    <input type="file" id="providerLogoFile" accept="image/*" onchange="handleLogoUpload(event)" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-slate-300 text-xs file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-500 cursor-pointer">
                 </div>
             </div>
             <div class="mt-6 flex justify-end gap-2">
@@ -561,6 +561,7 @@
             { id: 1, title: "Parcelación Mirador de Chinquihue", contact: "Don Roberto +56912345678", coords: "-41.51°, -73.01°", notes: "Despegar junto al camino principal. Precaución con gaviotas y viento racheado desde el canal." }
         ];
         let currentQuoteData = {};
+        let tempUploadedLogo = "";
 
         const checklistData = [
             { id: 'ch1', title: 'Espacio Aéreo y Normativa DGAC', desc: 'Verificar restricciones de zona, CTR, prohibiciones de vuelo o aglomeraciones.' },
@@ -606,7 +607,7 @@
                     document.getElementById('providerTitleInput').value = providerProfile.title;
                     document.getElementById('providerPhoneInput').value = providerProfile.phone || '';
                     document.getElementById('providerSocialInput').value = providerProfile.social || '';
-                    document.getElementById('providerLogoInput').value = providerProfile.logo || '';
+                    tempUploadedLogo = providerProfile.logo || '';
                 }
                 if (id === 'ratesModal') {
                     document.getElementById('rateBaseEstab').value = rates.baseEstab;
@@ -625,6 +626,17 @@
             } else {
                 modal.classList.add('hidden');
                 modal.classList.remove('flex');
+            }
+        }
+
+        function handleLogoUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    tempUploadedLogo = e.target.result;
+                };
+                reader.readAsDataURL(file);
             }
         }
 
@@ -647,7 +659,7 @@
                 title: document.getElementById('providerTitleInput').value.trim() || 'Operador Dron & Videógrafo',
                 phone: document.getElementById('providerPhoneInput').value.trim(),
                 social: document.getElementById('providerSocialInput').value.trim(),
-                logo: document.getElementById('providerLogoInput').value.trim()
+                logo: tempUploadedLogo || providerProfile.logo || ''
             };
             localStorage.setItem('cotidronProvider', JSON.stringify(providerProfile));
             updateNavbarLogo();
@@ -741,7 +753,7 @@
             if (reelsCount > 0) items.push({ desc: `Reel Vertical 4K editado y musicalizado`, qty: reelsCount, amount: reelsCost });
             if (horizontalCount > 0) items.push({ desc: `Video Promocional Horizontal 16:9 4K`, qty: horizontalCount, amount: horizontalCost });
             if (photoPackCount > 0) items.push({ desc: `Pack Fotografías HDR reveladas (Lightroom)`, qty: photoPackCount, amount: photoCost });
-            if (lotLinesCount > 0) items.push({ desc: `Trazado gráfico de deslindes / referencias`, qty: lotLinesCount, amount: lotLinesCost });
+            if (lotLinesCount > 0) items.push({ desc: `Trazado gráfico de deslindes / referencias`, qty: lotLinesCount, amount: lotLinesCount });
             if (rawFootage) items.push({ desc: `Entrega de material crudo 4K completo`, qty: 1, amount: rawCost });
             if (travelCost > 0) items.push({ desc: `Logística y traslado (${effectiveKm} km total)`, qty: 1, amount: travelCost });
             if (customAdjustment !== 0) items.push({ desc: customAdjustment < 0 ? 'Descuento especial aplicado' : 'Ajuste adicional', qty: 1, amount: customAdjustment });
@@ -801,17 +813,21 @@
             document.getElementById('footerPhone').innerHTML = `<i class="fa-solid fa-phone mr-1 text-blue-600"></i> ${providerProfile.phone || '+56 9 ...'}`;
             document.getElementById('footerSocial').innerHTML = `<i class="fa-solid fa-globe mr-1 text-blue-600"></i> ${providerProfile.social || '@dronesureno'}`;
 
-            // Card Logo rendering
+            // Card Logo rendering (Replacing Cotidron header with user logo)
             const cardLogoContainer = document.getElementById('cardLogoContainer');
             const cardLogoImg = document.getElementById('cardLogoImg');
             const cardDefaultLogo = document.getElementById('cardDefaultLogo');
+            const brandSubtitle = document.getElementById('summaryBrandSubtitle');
+
             if (providerProfile.logo && providerProfile.logo.trim() !== '') {
                 cardLogoImg.src = providerProfile.logo.trim();
                 cardLogoContainer.classList.remove('hidden');
                 cardDefaultLogo.classList.add('hidden');
+                brandSubtitle.textContent = providerProfile.name.toUpperCase();
             } else {
                 cardLogoContainer.classList.add('hidden');
                 cardDefaultLogo.classList.remove('hidden');
+                brandSubtitle.textContent = providerProfile.name.toUpperCase();
             }
 
             document.getElementById('summaryLocation').textContent = locationName;
@@ -849,7 +865,7 @@
         function copyWhatsAppText() {
             const d = currentQuoteData;
             const lines = [];
-            lines.push(`🚁 *COTIDRON | COTIZACIÓN SERVICIO AUDIOVISUAL*`);
+            lines.push(`🚁 *${d.providerName.toUpperCase()} | COTIZACIÓN SERVICIO*`);
             lines.push(`📍 *Locación:* ${d.locationName}`);
             lines.push(`👤 *Cliente:* ${d.clientName}${d.clientRut ? ` (RUT: ${d.clientRut})` : ''}`);
             lines.push(`🎬 *Proyecto:* ${d.projectName}`);
