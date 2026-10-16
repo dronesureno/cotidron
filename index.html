@@ -225,9 +225,9 @@
                                 <p class="text-[11px] text-slate-400">Ideal para restaurantes, locales, salones o showrooms (cámara estabilizada en mano)</p>
                             </div>
                             <div class="flex items-center gap-2">
-                                <button type="button" onclick="adjustCount('interiorVideoCount', -1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">-</button>
-                                <input type="number" id="interiorVideoCount" value="0" min="0" oninput="calculateQuote()" class="w-8 text-center bg-transparent text-sm font-bold text-blue-400 focus:outline-none">
-                                <button type="button" onclick="adjustCount('interiorVideoCount', 1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">+</button>
+                                <button type="button" onclick="adjustCount('interiorCount', -1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">-</button>
+                                <input type="number" id="interiorCount" value="0" min="0" oninput="calculateQuote()" class="w-8 text-center bg-transparent text-sm font-bold text-blue-400 focus:outline-none">
+                                <button type="button" onclick="adjustCount('interiorCount', 1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">+</button>
                             </div>
                         </div>
 
@@ -249,9 +249,9 @@
                                 <p class="text-[11px] text-slate-400">Masterizado en DaVinci/CapCut Pro (1 a 3 min) ideal para web o YouTube</p>
                             </div>
                             <div class="flex items-center gap-2">
-                                <button type="button" onclick="adjustCount('horizontalVideoCount', -1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">-</button>
-                                <input type="number" id="horizontalVideoCount" value="0" min="0" oninput="calculateQuote()" class="w-8 text-center bg-transparent text-sm font-bold text-blue-400 focus:outline-none">
-                                <button type="button" onclick="adjustCount('horizontalVideoCount', 1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">+</button>
+                                <button type="button" onclick="adjustCount('horizontalCount', -1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">-</button>
+                                <input type="number" id="horizontalCount" value="0" min="0" oninput="calculateQuote()" class="w-8 text-center bg-transparent text-sm font-bold text-blue-400 focus:outline-none">
+                                <button type="button" onclick="adjustCount('horizontalCount', 1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">+</button>
                             </div>
                         </div>
 
@@ -745,9 +745,9 @@
             const durationText = document.getElementById('flightDuration').options[document.getElementById('flightDuration').selectedIndex].text;
             const extraBatteries = Number(document.getElementById('extraBatteries').value) || 0;
 
-            const interiorCount = Number(document.getElementById('interiorVideoCount').value) || 0;
+            const interiorCount = Number(document.getElementById('interiorCount').value) || 0;
             const reelsCount = Number(document.getElementById('reelsCount').value) || 0;
-            const horizontalCount = Number(document.getElementById('horizontalVideoCount').value) || 0;
+            const horizontalCount = Number(document.getElementById('horizontalCount').value) || 0;
             const photoPackCount = Number(document.getElementById('photoPackCount').value) || 0;
             const lotLinesCount = Number(document.getElementById('lotLinesCount').value) || 0;
             const rawFootage = document.getElementById('rawFootage').checked;
@@ -935,9 +935,9 @@
             document.getElementById('locationPreset').selectedIndex = 0;
             applyLocationPreset();
             document.getElementById('extraBatteries').value = 0;
-            document.getElementById('interiorVideoCount').value = 0;
+            document.getElementById('interiorCount').value = 0;
             document.getElementById('reelsCount').value = 1;
-            document.getElementById('horizontalVideoCount').value = 0;
+            document.getElementById('horizontalCount').value = 0;
             document.getElementById('photoPackCount').value = 1;
             document.getElementById('lotLinesCount').value = 0;
             document.getElementById('rawFootage').checked = false;
