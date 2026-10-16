@@ -204,7 +204,7 @@
                                 <span class="text-xs text-slate-300">Baterías extra a la base</span>
                                 <div class="flex items-center gap-2">
                                     <button type="button" onclick="adjustCount('extraBatteries', -1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">-</button>
-                                    <input type="number" id="extraBatteries" value="0" min="0" readonly class="w-8 text-center bg-transparent text-sm font-bold text-blue-400">
+                                    <input type="number" id="extraBatteries" value="0" min="0" oninput="calculateQuote()" class="w-8 text-center bg-transparent text-sm font-bold text-blue-400 focus:outline-none">
                                     <button type="button" onclick="adjustCount('extraBatteries', 1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">+</button>
                                 </div>
                             </div>
@@ -226,7 +226,7 @@
                             </div>
                             <div class="flex items-center gap-2">
                                 <button type="button" onclick="adjustCount('interiorVideoCount', -1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">-</button>
-                                <input type="number" id="interiorVideoCount" value="0" min="0" readonly class="w-8 text-center bg-transparent text-sm font-bold text-blue-400">
+                                <input type="number" id="interiorVideoCount" value="0" min="0" oninput="calculateQuote()" class="w-8 text-center bg-transparent text-sm font-bold text-blue-400 focus:outline-none">
                                 <button type="button" onclick="adjustCount('interiorVideoCount', 1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">+</button>
                             </div>
                         </div>
@@ -238,7 +238,7 @@
                             </div>
                             <div class="flex items-center gap-2">
                                 <button type="button" onclick="adjustCount('reelsCount', -1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">-</button>
-                                <input type="number" id="reelsCount" value="1" min="0" readonly class="w-8 text-center bg-transparent text-sm font-bold text-blue-400">
+                                <input type="number" id="reelsCount" value="1" min="0" oninput="calculateQuote()" class="w-8 text-center bg-transparent text-sm font-bold text-blue-400 focus:outline-none">
                                 <button type="button" onclick="adjustCount('reelsCount', 1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">+</button>
                             </div>
                         </div>
@@ -250,7 +250,7 @@
                             </div>
                             <div class="flex items-center gap-2">
                                 <button type="button" onclick="adjustCount('horizontalVideoCount', -1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">-</button>
-                                <input type="number" id="horizontalVideoCount" value="0" min="0" readonly class="w-8 text-center bg-transparent text-sm font-bold text-blue-400">
+                                <input type="number" id="horizontalVideoCount" value="0" min="0" oninput="calculateQuote()" class="w-8 text-center bg-transparent text-sm font-bold text-blue-400 focus:outline-none">
                                 <button type="button" onclick="adjustCount('horizontalVideoCount', 1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">+</button>
                             </div>
                         </div>
@@ -262,7 +262,7 @@
                             </div>
                             <div class="flex items-center gap-2">
                                 <button type="button" onclick="adjustCount('photoPackCount', -1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">-</button>
-                                <input type="number" id="photoPackCount" value="1" min="0" readonly class="w-8 text-center bg-transparent text-sm font-bold text-blue-400">
+                                <input type="number" id="photoPackCount" value="1" min="0" oninput="calculateQuote()" class="w-8 text-center bg-transparent text-sm font-bold text-blue-400 focus:outline-none">
                                 <button type="button" onclick="adjustCount('photoPackCount', 1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">+</button>
                             </div>
                         </div>
@@ -274,7 +274,7 @@
                             </div>
                             <div class="flex items-center gap-2">
                                 <button type="button" onclick="adjustCount('lotLinesCount', -1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">-</button>
-                                <input type="number" id="lotLinesCount" value="0" min="0" readonly class="w-8 text-center bg-transparent text-sm font-bold text-blue-400">
+                                <input type="number" id="lotLinesCount" value="0" min="0" oninput="calculateQuote()" class="w-8 text-center bg-transparent text-sm font-bold text-blue-400 focus:outline-none">
                                 <button type="button" onclick="adjustCount('lotLinesCount', 1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">+</button>
                             </div>
                         </div>
@@ -336,7 +336,7 @@
                 </section>
             </div>
 
-            <!-- Right Summary Column (Sticky & Responsive) -->
+            <!-- Right Summary Column -->
             <div class="lg:col-span-6 lg:sticky lg:top-20">
                 <div class="space-y-4">
                     <div id="quoteCard" class="bg-white text-slate-900 border border-slate-200 rounded-2xl p-6 shadow-2xl print-container relative overflow-hidden">
@@ -406,4 +406,625 @@
                         <div class="flex justify-end mb-5">
                             <div class="w-60 space-y-1.5 text-xs">
                                 <div class="flex justify-between text-slate-600">
-                                    <span id
+                                    <span id="netLabel">Subtotal Neto</span>
+                                    <span id="summaryNet" class="font-semibold text-slate-900">$0</span>
+                                </div>
+                                <div id="taxRow" class="flex justify-between text-slate-600">
+                                    <span id="taxLabel">Impuestos (15.25%)</span>
+                                    <span id="summaryTax" class="font-semibold text-slate-900">$0</span>
+                                </div>
+                                <div class="flex justify-between items-center pt-2 border-t-2 border-slate-900 text-sm font-extrabold text-blue-950">
+                                    <span id="totalLabel">TOTAL</span>
+                                    <span id="summaryTotal" class="text-base text-blue-700">$0</span>
+                                </div>
+                                <p id="docBadge" class="text-[10px] text-blue-600 font-medium text-right mt-0.5"></p>
+                            </div>
+                        </div>
+
+                        <!-- Conditions & Footer info -->
+                        <div class="border-t border-slate-200 pt-3 text-[11px] text-slate-600 space-y-2">
+                            <div>
+                                <h4 class="font-bold text-slate-900 uppercase tracking-wider mb-0.5">Condiciones del Servicio</h4>
+                                <p id="summarySchedule" class="text-slate-700">• Servicio sujeto a ventana climática favorable.</p>
+                                <p class="text-slate-700">• Reserva de fecha con 50% de abono y 50% contra entrega final.</p>
+                            </div>
+                            <div class="pt-2 border-t border-slate-100 grid grid-cols-2 gap-2 text-slate-500">
+                                <p id="footerPhone"><i class="fa-solid fa-phone mr-1 text-blue-600"></i> +56 9 ...</p>
+                                <p id="footerSocial"><i class="fa-solid fa-globe mr-1 text-blue-600"></i> @dronesureno</p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 no-print">
+                        <button onclick="copyWhatsAppText()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-emerald-600/20 transition flex items-center justify-center gap-2 text-sm">
+                            <i class="fa-brands fa-whatsapp text-lg"></i> Copiar para WhatsApp
+                        </button>
+                        <button onclick="window.print()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-blue-600/20 transition flex items-center justify-center gap-2 text-sm">
+                            <i class="fa-solid fa-file-pdf"></i> Imprimir / Guardar PDF
+                        </button>
+                    </div>
+
+                    <div id="toast" class="hidden bg-emerald-950/90 border border-emerald-500/40 text-emerald-200 px-4 py-3 rounded-xl text-xs flex items-center gap-2 shadow-lg no-print">
+                        <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+                        <span>¡Propuesta copiada al portapapeles! Lista para pegar en WhatsApp.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: CHECKLIST PRE-VUELO -->
+        <div id="tabChecklist" class="tab-content hidden max-w-3xl mx-auto space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-5">
+                    <div>
+                        <h2 class="text-base font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-list-check text-blue-400"></i> Checklist Pre-Vuelo & Seguridad
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-0.5">Verificación obligatoria antes de armar equipo y despegar en terreno.</p>
+                    </div>
+                    <button onclick="resetChecklist()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700 transition">
+                        Reiniciar Checklist
+                    </button>
+                </div>
+
+                <div class="space-y-4" id="checklistContainer"></div>
+            </div>
+        </div>
+
+        <!-- TAB 3: MEMORIA DE PREDIOS Y CLIENTES -->
+        <div id="tabMemory" class="tab-content hidden max-w-4xl mx-auto space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-5">
+                    <div>
+                        <h2 class="text-base font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-map-location-dot text-blue-400"></i> Memoria de Predios y Notas de Terreno
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-0.5">Guarda coordenadas, puntos de despegue seguros y observaciones clave por cliente.</p>
+                    </div>
+                    <button onclick="openMemoryModal()" class="text-xs bg-blue-600 hover:bg-blue-500 text-white font-semibold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 shadow-lg shadow-blue-600/20">
+                        <i class="fa-solid fa-plus"></i> Nuevo Registro
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="memoryListContainer"></div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modal: Provider Profile -->
+    <div id="providerModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden items-center justify-center p-4 no-print">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3 mb-4">
+                <h3 class="text-sm font-bold uppercase tracking-wider text-white">Datos del Prestador / Marca & Logo</h3>
+                <button onclick="toggleModal('providerModal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="block text-slate-300 mb-1">Nombre y Apellido / Marca</label>
+                    <input type="text" id="providerNameInput" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-slate-300 mb-1">Título / Rol Profesional</label>
+                    <input type="text" id="providerTitleInput" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-slate-300 mb-1">Teléfono / WhatsApp</label>
+                    <input type="text" id="providerPhoneInput" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-slate-300 mb-1">Instagram / Redes / Portafolio</label>
+                    <input type="text" id="providerSocialInput" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-slate-300 mb-1">Subir Logo desde el Dispositivo (PC / Celular)</label>
+                    <input type="file" id="providerLogoFile" accept="image/*" onchange="handleLogoUpload(event)" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-slate-300 text-xs file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-500 cursor-pointer">
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end gap-2">
+                <button onclick="saveProviderProfile()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-4 py-2 rounded-lg">Guardar Perfil</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Base Rates -->
+    <div id="ratesModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden items-center justify-center p-4 no-print">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3 mb-4">
+                <h3 class="text-sm font-bold uppercase tracking-wider text-white">Configurar Tarifas Base (CLP)</h3>
+                <button onclick="toggleModal('ratesModal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="space-y-3 text-xs">
+                <div class="flex justify-between items-center"><label class="text-slate-300">Vuelo Base Dron Estabilizado</label><input type="number" id="rateBaseEstab" step="5000" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white"></div>
+                <div class="flex justify-between items-center"><label class="text-slate-300">Vuelo Base Dron FPV</label><input type="number" id="rateBaseFpv" step="5000" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white"></div>
+                <div class="flex justify-between items-center"><label class="text-slate-300">Vuelo Base Combo</label><input type="number" id="rateBaseCombo" step="5000" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white"></div>
+                <div class="flex justify-between items-center"><label class="text-slate-300">Video Interiores / Gimbal</label><input type="number" id="rateInterior" step="5000" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white"></div>
+                <div class="flex justify-between items-center"><label class="text-slate-300">Batería Adicional</label><input type="number" id="rateBattery" step="2000" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white"></div>
+                <div class="flex justify-between items-center"><label class="text-slate-300">Reel Vertical 4K</label><input type="number" id="rateReel" step="5000" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white"></div>
+                <div class="flex justify-between items-center"><label class="text-slate-300">Video Horizontal</label><input type="number" id="rateHorizontal" step="5000" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white"></div>
+                <div class="flex justify-between items-center"><label class="text-slate-300">Pack Fotos HDR</label><input type="number" id="ratePhotoPack" step="5000" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white"></div>
+                <div class="flex justify-between items-center"><label class="text-slate-300">Trazado Deslindes</label><input type="number" id="rateLotLines" step="5000" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white"></div>
+                <div class="flex justify-between items-center"><label class="text-slate-300">Entrega Crudos</label><input type="number" id="rateRaw" step="5000" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white"></div>
+                <div class="flex justify-between items-center"><label class="text-slate-300">Costo por Km ($/Km)</label><input type="number" id="rateKm" step="50" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white"></div>
+            </div>
+            <div class="mt-6 flex justify-end gap-2">
+                <button onclick="saveBaseRates()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-4 py-2 rounded-lg">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Memory Form -->
+    <div id="memoryModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden items-center justify-center p-4 no-print">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3 mb-4">
+                <h3 class="text-sm font-bold uppercase tracking-wider text-white">Registrar Predio / Zona de Vuelo</h3>
+                <button onclick="toggleModal('memoryModal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="space-y-3 text-xs">
+                <div><label class="block text-slate-300 mb-1">Nombre del Predio / Loteo / Cliente</label><input type="text" id="memTitle" placeholder="Ej: Parcelación Mirador de Llanquihue" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white"></div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div><label class="block text-slate-300 mb-1">Contacto / Teléfono</label><input type="text" id="memContact" placeholder="Ej: Don Carlos +569..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white"></div>
+                    <div><label class="block text-slate-300 mb-1">Coordenadas o Zona</label><input type="text" id="memCoords" placeholder="Ej: -41.47°, -72.93°" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white"></div>
+                </div>
+                <div><label class="block text-slate-300 mb-1">Notas Clave, Obstáculos y Despegue Seguro</label><textarea id="memNotes" rows="3" placeholder="Ej: Despegar junto al camino principal. Evitar sector norte por tendido eléctrico oculto entre árboles." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white"></textarea></div>
+            </div>
+            <div class="mt-6 flex justify-end gap-2">
+                <button onclick="saveMemoryItem()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-4 py-2 rounded-lg">Guardar Registro</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const defaultRates = { baseEstab: 45000, baseFpv: 55000, baseCombo: 80000, interior: 40000, battery: 15000, reel: 25000, horizontal: 45000, photoPack: 20000, lotLines: 20000, raw: 15000, km: 250 };
+        let rates = JSON.parse(localStorage.getItem('cotidronRates')) || { ...defaultRates };
+        let providerProfile = JSON.parse(localStorage.getItem('cotidronProvider')) || { name: "Sebastián Llanos", title: "Operador Dron & Videógrafo", phone: "+56 9 1234 5678", social: "@dronesureno", logo: "" };
+        let memoryItems = JSON.parse(localStorage.getItem('cotidronMemory')) || [
+            { id: 1, title: "Parcelación Mirador de Chinquihue", contact: "Don Roberto +56912345678", coords: "-41.51°, -73.01°", notes: "Despegar junto al camino principal. Precaución con gaviotas y viento racheado desde el canal." }
+        ];
+        let currentQuoteData = {};
+        let tempUploadedLogo = "";
+
+        const checklistData = [
+            { id: 'ch1', title: 'Espacio Aéreo y Normativa DGAC', desc: 'Verificar restricciones de zona, CTR, prohibiciones de vuelo o aglomeraciones.' },
+            { id: 'ch2', title: 'Clima y Viento Local', desc: 'Comprobar ausencia de lluvia, neblina y ráfagas de viento dentro de los límites del fabricante.' },
+            { id: 'ch3', title: 'Estado de Baterías (Celdas y Voltaje)', desc: 'Celdas balanceadas al 100%, sin hinchazones y temperatura óptima.' },
+            { id: 'ch4', title: 'Calibración de Brújula y IMU', desc: 'Realizar calibración magnética libre de interferencias metálicas o vehículos.' },
+            { id: 'ch5', title: 'Tarjeta SD y Formato de Grabación', desc: 'Espacio libre suficiente, tarjeta clase V30/U3 en 4K 60fps / D-Log M.' },
+            { id: 'ch6', title: 'Inspección Física de Hélices y Sensores', desc: 'Hélices sin muescas ni trizaduras; lentes y sensores anticolisión limpios.' },
+            { id: 'ch7', title: 'Punto RTH (Return to Home) y Geofence', desc: 'Altitud de retorno configurada sobre los obstáculos más altos de la zona.' }
+        ];
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('tabQuote').classList.add('hidden');
+            document.getElementById('tabChecklist').classList.add('hidden');
+            document.getElementById('tabMemory').classList.add('hidden');
+            
+            document.getElementById('tabBtnQuote').className = "text-xs px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white flex items-center gap-1.5";
+            document.getElementById('tabBtnChecklist').className = "text-xs px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white flex items-center gap-1.5";
+            document.getElementById('tabBtnMemory').className = "text-xs px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white flex items-center gap-1.5";
+
+            if (tab === 'quote') {
+                document.getElementById('tabQuote').classList.remove('hidden');
+                document.getElementById('tabBtnQuote').className = "text-xs px-3 py-1.5 rounded-lg font-medium transition bg-blue-600 text-white flex items-center gap-1.5";
+            } else if (tab === 'checklist') {
+                document.getElementById('tabChecklist').classList.remove('hidden');
+                document.getElementById('tabBtnChecklist').className = "text-xs px-3 py-1.5 rounded-lg font-medium transition bg-blue-600 text-white flex items-center gap-1.5";
+                renderChecklist();
+            } else if (tab === 'memory') {
+                document.getElementById('tabMemory').classList.remove('hidden');
+                document.getElementById('tabBtnMemory').className = "text-xs px-3 py-1.5 rounded-lg font-medium transition bg-blue-600 text-white flex items-center gap-1.5";
+                renderMemoryList();
+            }
+        }
+
+        function formatCLP(num) { return '$' + Math.round(num).toLocaleString('es-CL'); }
+
+        function toggleModal(id) {
+            const modal = document.getElementById(id);
+            if (modal.classList.contains('hidden')) {
+                if (id === 'providerModal') {
+                    document.getElementById('providerNameInput').value = providerProfile.name;
+                    document.getElementById('providerTitleInput').value = providerProfile.title;
+                    document.getElementById('providerPhoneInput').value = providerProfile.phone || '';
+                    document.getElementById('providerSocialInput').value = providerProfile.social || '';
+                    tempUploadedLogo = providerProfile.logo || '';
+                }
+                if (id === 'ratesModal') {
+                    document.getElementById('rateBaseEstab').value = rates.baseEstab;
+                    document.getElementById('rateBaseFpv').value = rates.baseFpv;
+                    document.getElementById('rateBaseCombo').value = rates.baseCombo;
+                    document.getElementById('rateInterior').value = rates.interior || 40000;
+                    document.getElementById('rateBattery').value = rates.battery;
+                    document.getElementById('rateReel').value = rates.reel;
+                    document.getElementById('rateHorizontal').value = rates.horizontal;
+                    document.getElementById('ratePhotoPack').value = rates.photoPack;
+                    document.getElementById('rateLotLines').value = rates.lotLines;
+                    document.getElementById('rateRaw').value = rates.raw;
+                    document.getElementById('rateKm').value = rates.km;
+                }
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            } else {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        function handleLogoUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    tempUploadedLogo = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function updateNavbarLogo() {
+            const logoImg = document.getElementById('navLogoImg');
+            const logoIcon = document.getElementById('navLogoIcon');
+            if (providerProfile.logo && providerProfile.logo.trim() !== '') {
+                logoImg.src = providerProfile.logo.trim();
+                logoImg.classList.remove('hidden');
+                logoIcon.classList.add('hidden');
+            } else {
+                logoImg.classList.add('hidden');
+                logoIcon.classList.remove('hidden');
+            }
+        }
+
+        function saveProviderProfile() {
+            providerProfile = {
+                name: document.getElementById('providerNameInput').value.trim() || 'Sebastián Llanos',
+                title: document.getElementById('providerTitleInput').value.trim() || 'Operador Dron & Videógrafo',
+                phone: document.getElementById('providerPhoneInput').value.trim(),
+                social: document.getElementById('providerSocialInput').value.trim(),
+                logo: tempUploadedLogo || providerProfile.logo || ''
+            };
+            localStorage.setItem('cotidronProvider', JSON.stringify(providerProfile));
+            updateNavbarLogo();
+            toggleModal('providerModal');
+            calculateQuote();
+        }
+
+        function saveBaseRates() {
+            rates = {
+                baseEstab: Number(document.getElementById('rateBaseEstab').value) || 0,
+                baseFpv: Number(document.getElementById('rateBaseFpv').value) || 0,
+                baseCombo: Number(document.getElementById('rateBaseCombo').value) || 0,
+                interior: Number(document.getElementById('rateInterior').value) || 0,
+                battery: Number(document.getElementById('rateBattery').value) || 0,
+                reel: Number(document.getElementById('rateReel').value) || 0,
+                horizontal: Number(document.getElementById('rateHorizontal').value) || 0,
+                photoPack: Number(document.getElementById('ratePhotoPack').value) || 0,
+                lotLines: Number(document.getElementById('rateLotLines').value) || 0,
+                raw: Number(document.getElementById('rateRaw').value) || 0,
+                km: Number(document.getElementById('rateKm').value) || 0
+            };
+            localStorage.setItem('cotidronRates', JSON.stringify(rates));
+            toggleModal('ratesModal');
+            calculateQuote();
+        }
+
+        function adjustCount(id, delta) {
+            const input = document.getElementById(id);
+            let val = parseInt(input.value || 0, 10) + delta;
+            if (val < 0) val = 0;
+            input.value = val;
+            calculateQuote();
+        }
+
+        function applyLocationPreset() {
+            const val = document.getElementById('locationPreset').value;
+            if (val === 'custom') return;
+            const [km, tolls, name] = val.split('|');
+            document.getElementById('distanceKm').value = km;
+            document.getElementById('tollsCost').value = tolls;
+            document.getElementById('customLocationName').value = name;
+            calculateQuote();
+        }
+
+        function calculateQuote() {
+            const clientName = document.getElementById('clientName').value.trim() || 'María López';
+            const clientRut = document.getElementById('clientRut').value.trim();
+            const projectName = document.getElementById('projectName').value.trim() || 'Servicio Audiovisual con Dron';
+            const projectType = document.getElementById('projectType').value;
+            const locationName = document.getElementById('customLocationName').value.trim() || 'Puerto Montt';
+
+            const distanceKm = Number(document.getElementById('distanceKm').value) || 0;
+            const tollsCost = Number(document.getElementById('tollsCost').value) || 0;
+            const roundTrip = document.getElementById('roundTrip').checked;
+
+            const droneType = document.querySelector('input[name="droneType"]:checked').value;
+            const durationMultiplier = Number(document.getElementById('flightDuration').value) || 1;
+            const durationText = document.getElementById('flightDuration').options[document.getElementById('flightDuration').selectedIndex].text;
+            const extraBatteries = Number(document.getElementById('extraBatteries').value) || 0;
+
+            const interiorCount = Number(document.getElementById('interiorVideoCount').value) || 0;
+            const reelsCount = Number(document.getElementById('reelsCount').value) || 0;
+            const horizontalCount = Number(document.getElementById('horizontalVideoCount').value) || 0;
+            const photoPackCount = Number(document.getElementById('photoPackCount').value) || 0;
+            const lotLinesCount = Number(document.getElementById('lotLinesCount').value) || 0;
+            const rawFootage = document.getElementById('rawFootage').checked;
+
+            const taxMode = document.getElementById('taxMode').value;
+            const scheduleCondition = document.getElementById('scheduleCondition').value;
+            const customAdjustment = Number(document.getElementById('customAdjustment').value) || 0;
+            const overrideTotal = document.getElementById('overrideTotal').value;
+            const validityDays = document.getElementById('validityDays').value;
+
+            let baseFlight = rates.baseEstab;
+            let droneLabel = 'Operación Dron 4K Estabilizado';
+            if (droneType === 'fpv') { baseFlight = rates.baseFpv; droneLabel = 'Operación Dron FPV Dinámico 4K'; }
+            else if (droneType === 'combo') { baseFlight = rates.baseCombo; droneLabel = 'Operación Combo Dual (Estabilizado + FPV)'; }
+
+            const flightCost = Math.round(baseFlight * durationMultiplier);
+            const interiorCost = interiorCount * (rates.interior || 40000);
+            const batteryCost = extraBatteries * rates.battery;
+            const effectiveKm = roundTrip ? distanceKm * 2 : distanceKm;
+            const travelCost = (effectiveKm * rates.km) + tollsCost;
+
+            const reelsCost = reelsCount * rates.reel;
+            const horizontalCost = horizontalCount * rates.horizontal;
+            const photoCost = photoPackCount * rates.photoPack;
+            const lotLinesCost = lotLinesCount * rates.lotLines;
+            const rawCost = rawFootage ? rates.raw : 0;
+
+            const items = [];
+            items.push({ desc: `${droneLabel} (${durationText.split('(')[0].trim()})`, qty: 1, amount: flightCost });
+            if (interiorCount > 0) items.push({ desc: `Video Interiores / Recorrido con Gimbal`, qty: interiorCount, amount: interiorCost });
+            if (extraBatteries > 0) items.push({ desc: `Batería / Vuelo adicional en terreno`, qty: extraBatteries, amount: batteryCost });
+            if (reelsCount > 0) items.push({ desc: `Reel Vertical 4K editado y musicalizado`, qty: reelsCount, amount: reelsCost });
+            if (horizontalCount > 0) items.push({ desc: `Video Promocional Horizontal 16:9 4K`, qty: horizontalCount, amount: horizontalCost });
+            if (photoPackCount > 0) items.push({ desc: `Pack Fotografías HDR reveladas (Lightroom)`, qty: photoPackCount, amount: photoCost });
+            if (lotLinesCount > 0) items.push({ desc: `Trazado gráfico de deslindes / referencias`, qty: lotLinesCount, amount: lotLinesCount });
+            if (rawFootage) items.push({ desc: `Entrega de material crudo 4K completo`, qty: 1, amount: rawCost });
+            if (travelCost > 0) items.push({ desc: `Logística y traslado (${effectiveKm} km total)`, qty: 1, amount: travelCost });
+            if (customAdjustment !== 0) items.push({ desc: customAdjustment < 0 ? 'Descuento especial aplicado' : 'Ajuste adicional', qty: 1, amount: customAdjustment });
+
+            let netTotal = items.reduce((sum, i) => sum + i.amount, 0);
+            if (overrideTotal !== '' && Number(overrideTotal) > 0) netTotal = Number(overrideTotal);
+
+            let taxAmount = 0;
+            let finalTotal = netTotal;
+            let netLabelText = 'Subtotal Neto';
+            let taxLabelText = '';
+            let totalLabelText = 'TOTAL';
+            let docBadgeText = 'Pago Líquido Directo (Sin documento tributario)';
+
+            const taxRowEl = document.getElementById('taxRow');
+            taxRowEl.classList.remove('hidden');
+
+            if (taxMode === 'liquido') {
+                taxRowEl.classList.add('hidden');
+            } else if (taxMode === 'boleta') {
+                finalTotal = Math.round(netTotal / (1 - 0.1525));
+                taxAmount = finalTotal - netTotal;
+                netLabelText = 'Valor Líquido';
+                taxLabelText = 'Retención Boleta (15.25%)';
+                totalLabelText = 'TOTAL BRUTO';
+                docBadgeText = 'Incluye Boleta de Honorarios';
+            } else if (taxMode === 'factura_afecta') {
+                taxAmount = Math.round(netTotal * 0.19);
+                finalTotal = netTotal + taxAmount;
+                netLabelText = 'Subtotal Neto';
+                taxLabelText = 'IVA (19%)';
+                totalLabelText = 'TOTAL A PAGAR';
+                docBadgeText = 'Incluye Factura Afecta (+19% IVA)';
+            } else if (taxMode === 'factura_exenta') {
+                taxAmount = 0;
+                finalTotal = netTotal;
+                netLabelText = 'Subtotal Exento';
+                taxLabelText = 'IVA Exento (0%)';
+                totalLabelText = 'TOTAL';
+                docBadgeText = 'Incluye Factura Exenta';
+            }
+
+            document.getElementById('summaryProjectTitle').textContent = projectName;
+            document.getElementById('summaryProjectCategory').textContent = projectType;
+            document.getElementById('summaryClient').textContent = clientName;
+            const rutEl = document.getElementById('summaryRut');
+            if (clientRut) { rutEl.textContent = `RUT: ${clientRut}`; rutEl.classList.remove('hidden'); }
+            else { rutEl.classList.add('hidden'); }
+
+            document.getElementById('summaryProviderName').textContent = providerProfile.name;
+            document.getElementById('summaryProviderTitle').textContent = providerProfile.title;
+            
+            const contactEl = document.getElementById('summaryProviderContact');
+            const contactText = [providerProfile.phone, providerProfile.social].filter(Boolean).join(' • ');
+            contactEl.textContent = contactText || 'Sin contacto registrado';
+
+            document.getElementById('footerPhone').innerHTML = `<i class="fa-solid fa-phone mr-1 text-blue-600"></i> ${providerProfile.phone || '+56 9 ...'}`;
+            document.getElementById('footerSocial').innerHTML = `<i class="fa-solid fa-globe mr-1 text-blue-600"></i> ${providerProfile.social || '@dronesureno'}`;
+
+            // Card Logo & Brand Subtitle rendering
+            const cardLogoContainer = document.getElementById('cardLogoContainer');
+            const cardLogoImg = document.getElementById('cardLogoImg');
+            const cardDefaultLogo = document.getElementById('cardDefaultLogo');
+            const brandSubtitle = document.getElementById('summaryBrandSubtitle');
+
+            brandSubtitle.textContent = (providerProfile.title || providerProfile.name).toUpperCase();
+
+            if (providerProfile.logo && providerProfile.logo.trim() !== '') {
+                cardLogoImg.src = providerProfile.logo.trim();
+                cardLogoContainer.classList.remove('hidden');
+                cardDefaultLogo.classList.add('hidden');
+            } else {
+                cardLogoContainer.classList.add('hidden');
+                cardDefaultLogo.classList.remove('hidden');
+            }
+
+            document.getElementById('summaryLocation').textContent = locationName;
+            document.getElementById('summaryValidityText').textContent = validityDays;
+
+            const tableBody = document.getElementById('summaryTableBody');
+            tableBody.innerHTML = items.map(item => `
+                <tr class="hover:bg-slate-50">
+                    <td class="py-2.5 px-3 font-medium text-slate-800">${item.desc}</td>
+                    <td class="py-2.5 px-3 text-center text-slate-600">${item.qty}</td>
+                    <td class="py-2.5 px-3 text-right font-semibold text-slate-900">${formatCLP(item.amount)}</td>
+                </tr>
+            `).join('');
+
+            document.getElementById('netLabel').textContent = netLabelText;
+            document.getElementById('summaryNet').textContent = formatCLP(netTotal);
+            document.getElementById('taxLabel').textContent = taxLabelText;
+            document.getElementById('summaryTax').textContent = formatCLP(taxAmount);
+            document.getElementById('totalLabel').textContent = totalLabelText;
+            document.getElementById('docBadge').textContent = docBadgeText;
+            document.getElementById('summaryTotal').textContent = formatCLP(finalTotal);
+
+            document.getElementById('summarySchedule').textContent = `• ${scheduleCondition}`;
+
+            currentQuoteData = {
+                clientName, clientRut, projectName, projectType, locationName,
+                items, netTotal, taxAmount, finalTotal, taxMode,
+                netLabelText, taxLabelText, totalLabelText, docBadgeText,
+                scheduleCondition, validityDays, 
+                providerName: providerProfile.name, providerTitle: providerProfile.title,
+                providerPhone: providerProfile.phone, providerSocial: providerProfile.social
+            };
+        }
+
+        function copyWhatsAppText() {
+            const d = currentQuoteData;
+            const lines = [];
+            lines.push(`🚁 *${d.providerName.toUpperCase()} | COTIZACIÓN SERVICIO*`);
+            lines.push(`📍 *Locación:* ${d.locationName}`);
+            lines.push(`👤 *Cliente:* ${d.clientName}${d.clientRut ? ` (RUT: ${d.clientRut})` : ''}`);
+            lines.push(`🎬 *Proyecto:* ${d.projectName}`);
+            lines.push(``);
+            lines.push(`*DETALLE DEL SERVICIO:*`);
+            d.items.forEach(item => { lines.push(`✅ ${item.desc} (${item.qty}): *${formatCLP(item.amount)}*`); });
+            lines.push(``);
+            if (d.taxMode === 'liquido') {
+                lines.push(`💰 *VALOR TOTAL LÍQUIDO:* *${formatCLP(d.finalTotal)}*`);
+            } else {
+                lines.push(`💵 *${d.netLabelText}:*${formatCLP(d.netTotal)}`);
+                lines.push(`🧾 *${d.taxLabelText}:*${formatCLP(d.taxAmount)}`);
+                lines.push(`💰 *${d.totalLabelText.toUpperCase()}:* *${formatCLP(d.finalTotal)}*`);
+                lines.push(`_(${d.docBadgeText})_`);
+            }
+            lines.push(``);
+            lines.push(`*CONDICIONES:*`);
+            lines.push(`• ${d.scheduleCondition}`);
+            lines.push(`• Reserva con 50% de abono y 50% contra entrega.`);
+            lines.push(`• Validez de la oferta: ${d.validityDays}.`);
+            lines.push(``);
+            lines.push(`Quedo atento a cualquier duda o ajuste que necesites. ¡Saludos!`);
+            lines.push(`*${d.providerName}* | ${d.providerTitle}`);
+            if (d.providerPhone) lines.push(`📞 ${d.providerPhone}`);
+            if (d.providerSocial) lines.push(`🌐 Portafolio/Redes: ${d.providerSocial}`);
+
+            navigator.clipboard.writeText(lines.join('\n')).then(() => {
+                const toast = document.getElementById('toast');
+                toast.classList.remove('hidden');
+                setTimeout(() => toast.classList.add('hidden'), 3500);
+            });
+        }
+
+        function resetForm() {
+            document.getElementById('clientName').value = '';
+            document.getElementById('clientRut').value = '';
+            document.getElementById('projectName').value = '';
+            document.getElementById('locationPreset').selectedIndex = 0;
+            applyLocationPreset();
+            document.getElementById('extraBatteries').value = 0;
+            document.getElementById('interiorVideoCount').value = 0;
+            document.getElementById('reelsCount').value = 1;
+            document.getElementById('horizontalVideoCount').value = 0;
+            document.getElementById('photoPackCount').value = 1;
+            document.getElementById('lotLinesCount').value = 0;
+            document.getElementById('rawFootage').checked = false;
+            document.getElementById('customAdjustment').value = 0;
+            document.getElementById('overrideTotal').value = '';
+            calculateQuote();
+        }
+
+        function renderChecklist() {
+            const container = document.getElementById('checklistContainer');
+            const saved = JSON.parse(localStorage.getItem('cotidronChecklistState')) || {};
+            container.innerHTML = checklistData.map(item => `
+                <label class="flex items-start gap-3.5 p-3.5 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer hover:border-slate-700 transition">
+                    <input type="checkbox" id="${item.id}" ${saved[item.id] ? 'checked' : ''} onchange="saveChecklistState()" class="w-5 h-5 mt-0.5 accent-blue-500 rounded">
+                    <div>
+                        <p class="text-sm font-semibold text-white">${item.title}</p>
+                        <p class="text-xs text-slate-400 mt-0.5">${item.desc}</p>
+                    </div>
+                </label>
+            `).join('');
+        }
+
+        function saveChecklistState() {
+            const state = {};
+            checklistData.forEach(item => { state[item.id] = document.getElementById(item.id).checked; });
+            localStorage.setItem('cotidronChecklistState', JSON.stringify(state));
+        }
+
+        function resetChecklist() {
+            localStorage.removeItem('cotidronChecklistState');
+            renderChecklist();
+        }
+
+        function renderMemoryList() {
+            const container = document.getElementById('memoryListContainer');
+            if (memoryItems.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500 col-span-2 text-center py-6">No hay predios guardados todavía.</p>`;
+                return;
+            }
+            container.innerHTML = memoryItems.map(m => `
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-2 relative">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-sm font-bold text-white">${m.title}</h3>
+                        <button onclick="deleteMemoryItem(${m.id})" class="text-slate-500 hover:text-red-400"><i class="fa-solid fa-trash text-xs"></i></button>
+                    </div>
+                    <p class="text-xs text-blue-400"><i class="fa-solid fa-phone mr-1"></i> ${m.contact || 'Sin contacto'}</p>
+                    <p class="text-xs text-slate-400"><i class="fa-solid fa-location-crosshairs mr-1"></i> ${m.coords || 'Sin coordenadas'}</p>
+                    <p class="text-xs text-slate-300 bg-slate-900 p-2.5 rounded-lg border border-slate-800/80 mt-1"><strong class="text-slate-400">Notas:</strong> ${m.notes}</p>
+                </div>
+            `).join('');
+        }
+
+        function openMemoryModal() {
+            document.getElementById('memTitle').value = '';
+            document.getElementById('memContact').value = '';
+            document.getElementById('memCoords').value = '';
+            document.getElementById('memNotes').value = '';
+            toggleModal('memoryModal');
+        }
+
+        function saveMemoryItem() {
+            const title = document.getElementById('memTitle').value.trim();
+            if (!title) return alert('Ingresa un nombre para el predio');
+            const newItem = {
+                id: Date.now(),
+                title,
+                contact: document.getElementById('memContact').value.trim(),
+                coords: document.getElementById('memCoords').value.trim(),
+                notes: document.getElementById('memNotes').value.trim()
+            };
+            memoryItems.unshift(newItem);
+            localStorage.setItem('cotidronMemory', JSON.stringify(memoryItems));
+            toggleModal('memoryModal');
+            renderMemoryList();
+        }
+
+        function deleteMemoryItem(id) {
+            memoryItems = memoryItems.filter(m => m.id !== id);
+            localStorage.setItem('cotidronMemory', JSON.stringify(memoryItems));
+            renderMemoryList();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const today = new Date().toLocaleDateString('es-CL', { day: '2-digit', month: 'short', year: 'numeric' });
+            document.getElementById('summaryDate').textContent = today;
+            updateNavbarLogo();
+            calculateQuote();
+        });
+    </script>
+</body>
+</html>
