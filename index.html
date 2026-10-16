@@ -1,408 +1,35 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cotidron - Cotizador y Operaciones de Dron</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        @media print {
-            body { background: white !important; color: #0f172a !important; font-size: 11px !important; }
-            .no-print { display: none !important; }
-            main { padding: 0 !important; margin: 0 !important; max-width: 100% !important; }
-            .print-container { 
-                width: 100% !important; 
-                max-width: 100% !important; 
-                padding: 15px !important; 
-                margin: 0 !important; 
-                box-shadow: none !important; 
-                border: none !important; 
-                page-break-inside: avoid !important;
-            }
-            @page { size: portrait; margin: 10mm; }
-        }
-    </style>
-</head>
-<body class="bg-slate-950 text-slate-100 min-h-screen">
-
-    <!-- Top Navbar (No Print) -->
-    <header class="bg-slate-900/95 backdrop-blur border-b border-slate-800 sticky top-0 z-30 no-print">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap justify-between items-center gap-3">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center shadow-lg shadow-blue-500/20 overflow-hidden">
-                    <img id="navLogoImg" src="" alt="Logo" class="w-full h-full object-cover hidden">
-                    <i id="navLogoIcon" class="fa-solid fa-helicopter text-white text-lg"></i>
-                </div>
-                <div>
-                    <h1 class="text-base font-bold tracking-tight text-white">Cotidron <span class="text-blue-400 text-[10px] font-semibold px-2 py-0.5 bg-blue-500/10 border border-blue-500/20 rounded-full ml-1">Pro Terreno</span></h1>
-                    <p class="text-[11px] text-slate-400">Cotizaciones, Checklist & Memoria Operativa</p>
-                </div>
-            </div>
-
-            <!-- Tab Navigation & Configs -->
-            <div class="flex items-center gap-2 flex-wrap">
-                <div class="bg-slate-950 p-1 rounded-xl border border-slate-800 flex items-center gap-1">
-                    <button onclick="switchTab('quote')" id="tabBtnQuote" class="text-xs px-3 py-1.5 rounded-lg font-medium transition bg-blue-600 text-white flex items-center gap-1.5">
-                        <i class="fa-solid fa-calculator"></i> Cotizador
-                    </button>
-                    <button onclick="switchTab('checklist')" id="tabBtnChecklist" class="text-xs px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white flex items-center gap-1.5">
-                        <i class="fa-solid fa-list-check"></i> Checklist Vuelo
-                    </button>
-                    <button onclick="switchTab('memory')" id="tabBtnMemory" class="text-xs px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white flex items-center gap-1.5">
-                        <i class="fa-solid fa-map-location-dot"></i> Memoria Predios
-                    </button>
-                </div>
-
-                <div class="flex items-center gap-1.5">
-                    <button onclick="toggleModal('providerModal')" title="Mi Perfil" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 p-2 rounded-lg border border-slate-700 transition">
-                        <i class="fa-solid fa-user-gear text-blue-400"></i>
-                    </button>
-                    <button onclick="toggleModal('ratesModal')" title="Tarifas Base" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 p-2 rounded-lg border border-slate-700 transition">
-                        <i class="fa-solid fa-sliders text-blue-400"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Main Container -->
+@@ -72,7 +72,7 @@ <h1 class="text-base font-bold tracking-tight text-white">Cotidron <span class="
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
         <!-- TAB 1: COTIZADOR -->
+        <div id="tabQuote" class="tab-content grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div id="tabQuote" class="tab-content grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             <div class="lg:col-span-6 space-y-6 no-print">
                 <section class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
                     <div class="flex items-center gap-2 mb-4">
-                        <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center">1</span>
-                        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Datos del Cliente & Proyecto</h2>
-                    </div>
+@@ -82,7 +82,7 @@ <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Datos del
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs text-slate-400 mb-1">Cliente / Empresa (Razón Social)</label>
+                            <input type="text" id="clientName" oninput="calculateQuote()" placeholder="Ej: Restaurante El Sabor" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
                             <input type="text" id="clientName" oninput="calculateQuote()" placeholder="Ej: María López" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
                         </div>
                         <div>
                             <label class="block text-xs text-slate-400 mb-1">RUT Empresa / Cliente (Opcional)</label>
-                            <input type="text" id="clientRut" oninput="calculateQuote()" placeholder="Ej: 76.123.456-7" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-xs text-slate-400 mb-1">Nombre del Proyecto / Local</label>
-                            <input type="text" id="projectName" oninput="calculateQuote()" placeholder="Ej: Video Comercial Local" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-xs text-slate-400 mb-1">Categoría de Servicio</label>
-                            <select id="projectType" onchange="calculateQuote()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
-                                <option value="Restaurantes / Locales Comerciales">Restaurantes / Locales Comerciales</option>
-                                <option value="Parcelas / Inmobiliaria">Parcelas / Loteos / Inmobiliaria</option>
-                                <option value="Turismo / Cabañas / Hotelería">Turismo / Cabañas / Hotelería</option>
-                                <option value="Comercial / Corporativo / Industrial">Comercial / Corporativo / Marítimo</option>
-                                <option value="Evento / Deportivo / Musical">Evento / Deportivo / Musical</option>
-                            </select>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center gap-2">
-                            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center">2</span>
-                            <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Ruta y Logística</h2>
-                        </div>
-                        <span class="text-xs text-blue-400 bg-blue-500/10 px-2.5 py-1 rounded-full border border-blue-500/20">Cobertura Nacional</span>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <label class="block text-xs text-slate-400 mb-1">Destino Rápido (Preset)</label>
-                            <select id="locationPreset" onchange="applyLocationPreset()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
-                                <option value="0|0|Puerto Montt Urbano">Puerto Montt Urbano / Local (0 km)</option>
-                                <option value="20|0|Alerce / Chamiza">Alerce / Chamiza (~20 km)</option>
-                                <option value="22|3500|Puerto Varas / Llanquihue">Puerto Varas / Llanquihue (~22 km + Peaje)</option>
-                                <option value="55|3500|Frutillar / Ensenada">Frutillar / Ensenada (~55 km)</option>
-                                <option value="115|6000|Osorno / Puyehue">Osorno / Puyehue (~115 km)</option>
-                                <option value="100|5000|Temuco / Zona Araucanía">Temuco / Zona Araucanía</option>
-                                <option value="450|18000|Santiago / Zona Metropolitana">Santiago / Zona Metropolitana</option>
-                                <option value="custom">Personalizado (Ingresar manual)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs text-slate-400 mb-1">Nombre Específico de Locación</label>
-                            <input type="text" id="customLocationName" oninput="calculateQuote()" value="Puerto Montt Urbano" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
-                        <div>
-                            <label class="block text-xs text-slate-400 mb-1">Distancia Solo Ida (Km)</label>
-                            <input type="number" id="distanceKm" min="0" value="0" oninput="calculateQuote()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-xs text-slate-400 mb-1">Peajes / Viático ($)</label>
-                            <input type="number" id="tollsCost" min="0" step="1000" value="0" oninput="calculateQuote()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
-                        </div>
-                        <label class="flex items-center gap-2.5 bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 cursor-pointer select-none">
-                            <input type="checkbox" id="roundTrip" checked onchange="calculateQuote()" class="w-4 h-4 accent-blue-500 rounded">
-                            <span class="text-xs text-slate-300 font-medium">Calcular Ida y Vuelta (x2)</span>
-                        </label>
-                    </div>
-                </section>
-
-                <section class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
-                    <div class="flex items-center gap-2 mb-4">
-                        <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center">3</span>
-                        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Operación de Vuelo & Captura</h2>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
-                        <label class="cursor-pointer">
-                            <input type="radio" name="droneType" value="estabilizado" checked onchange="calculateQuote()" class="peer hidden">
-                            <div class="p-3.5 rounded-xl border border-slate-800 bg-slate-950 peer-checked:border-blue-500 peer-checked:bg-blue-500/10 transition">
-                                <div class="flex justify-between items-center mb-1">
-                                    <span class="text-xs font-bold text-white">Dron 4K Estabilizado</span>
-                                    <i class="fa-solid fa-camera text-blue-400 text-xs"></i>
-                                </div>
-                                <p class="text-[11px] text-slate-400">Tomas cinemáticas suaves, panorámicas y fotografía HDR/RAW.</p>
-                            </div>
-                        </label>
-                        <label class="cursor-pointer">
-                            <input type="radio" name="droneType" value="fpv" onchange="calculateQuote()" class="peer hidden">
-                            <div class="p-3.5 rounded-xl border border-slate-800 bg-slate-950 peer-checked:border-blue-500 peer-checked:bg-blue-500/10 transition">
-                                <div class="flex justify-between items-center mb-1">
-                                    <span class="text-xs font-bold text-white">Dron FPV Dinámico</span>
-                                    <i class="fa-solid fa-bolt text-amber-400 text-xs"></i>
-                                </div>
-                                <p class="text-[11px] text-slate-400">Vuelo inmersivo de acción, interiores/exteriores (Avata 2 4K).</p>
-                            </div>
-                        </label>
-                        <label class="cursor-pointer">
-                            <input type="radio" name="droneType" value="combo" onchange="calculateQuote()" class="peer hidden">
-                            <div class="p-3.5 rounded-xl border border-slate-800 bg-slate-950 peer-checked:border-blue-500 peer-checked:bg-blue-500/10 transition">
-                                <div class="flex justify-between items-center mb-1">
-                                    <span class="text-xs font-bold text-white">Combo Dual (Estab + FPV)</span>
-                                    <i class="fa-solid fa-layer-group text-indigo-400 text-xs"></i>
-                                </div>
-                                <p class="text-[11px] text-slate-400">Cobertura aérea total: vistas generales + vuelos inmersivos.</p>
-                            </div>
-                        </label>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs text-slate-400 mb-1">Jornada / Tiempo en Terreno</label>
-                            <select id="flightDuration" onchange="calculateQuote()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
-                                <option value="1">Sesión Puntual (Hasta 1.5 hrs / 1-2 baterías)</option>
-                                <option value="1.5">Media Jornada (Hasta 3.5 hrs en terreno)</option>
-                                <option value="2.3">Jornada Completa (Día de rodaje / múltiples horas de luz)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs text-slate-400 mb-1">Baterías / Vuelos Adicionales</label>
-                            <div class="flex items-center bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 justify-between">
-                                <span class="text-xs text-slate-300">Baterías extra a la base</span>
-                                <div class="flex items-center gap-2">
-                                    <button type="button" onclick="adjustCount('extraBatteries', -1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">-</button>
-                                    <input type="number" id="extraBatteries" value="0" min="0" oninput="calculateQuote()" class="w-8 text-center bg-transparent text-sm font-bold text-blue-400 focus:outline-none">
-                                    <button type="button" onclick="adjustCount('extraBatteries', 1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">+</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
-                    <div class="flex items-center gap-2 mb-4">
-                        <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center">4</span>
-                        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Post-Producción & Entregables</h2>
-                    </div>
-
-                    <div class="space-y-3">
-                        <div class="flex items-center justify-between p-3 bg-slate-950 border border-slate-800 rounded-xl">
-                            <div>
-                                <p class="text-xs font-semibold text-white">Video Interiores / Recorrido Comercial con Gimbal</p>
-                                <p class="text-[11px] text-slate-400">Ideal para restaurantes, locales, salones o showrooms</p>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <button type="button" onclick="adjustCount('interiorCount', -1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">-</button>
-                                <input type="number" id="interiorCount" value="0" min="0" oninput="calculateQuote()" class="w-8 text-center bg-transparent text-sm font-bold text-blue-400 focus:outline-none">
-                                <button type="button" onclick="adjustCount('interiorCount', 1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">+</button>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center justify-between p-3 bg-slate-950 border border-slate-800 rounded-xl">
-                            <div>
-                                <p class="text-xs font-semibold text-white">Reels Verticales 4K Editados (Instagram / TikTok)</p>
-                                <p class="text-[11px] text-slate-400">Color grading, diseño sonoro, música y textos dinámicos</p>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <button type="button" onclick="adjustCount('reelsCount', -1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">-</button>
-                                <input type="number" id="reelsCount" value="1" min="0" oninput="calculateQuote()" class="w-8 text-center bg-transparent text-sm font-bold text-blue-400 focus:outline-none">
-                                <button type="button" onclick="adjustCount('reelsCount', 1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">+</button>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center justify-between p-3 bg-slate-950 border border-slate-800 rounded-xl">
-                            <div>
-                                <p class="text-xs font-semibold text-white">Video Corporativo / Promocional Horizontal (16:9)</p>
-                                <p class="text-[11px] text-slate-400">Masterizado en DaVinci/CapCut Pro</p>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <button type="button" onclick="adjustCount('horizontalCount', -1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">-</button>
-                                <input type="number" id="horizontalCount" value="0" min="0" oninput="calculateQuote()" class="w-8 text-center bg-transparent text-sm font-bold text-blue-400 focus:outline-none">
-                                <button type="button" onclick="adjustCount('horizontalCount', 1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">+</button>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center justify-between p-3 bg-slate-950 border border-slate-800 rounded-xl">
-                            <div>
-                                <p class="text-xs font-semibold text-white">Packs de Fotografías Aéreas HDR (Lightroom)</p>
-                                <p class="text-[11px] text-slate-400">Pack de 10 a 15 fotos reveladas</p>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <button type="button" onclick="adjustCount('photoPackCount', -1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">-</button>
-                                <input type="number" id="photoPackCount" value="1" min="0" oninput="calculateQuote()" class="w-8 text-center bg-transparent text-sm font-bold text-blue-400 focus:outline-none">
-                                <button type="button" onclick="adjustCount('photoPackCount', 1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">+</button>
-                            </div>
-                        </div>
-
-                        <div class="flex items-center justify-between p-3 bg-slate-950 border border-slate-800 rounded-xl">
-                            <div>
-                                <p class="text-xs font-semibold text-white">Trazado Gráfico de Deslindes / Lotes</p>
-                                <p class="text-[11px] text-slate-400">Delimitación visual sobre fotos o video</p>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <button type="button" onclick="adjustCount('lotLinesCount', -1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">-</button>
-                                <input type="number" id="lotLinesCount" value="0" min="0" oninput="calculateQuote()" class="w-8 text-center bg-transparent text-sm font-bold text-blue-400 focus:outline-none">
-                                <button type="button" onclick="adjustCount('lotLinesCount', 1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">+</button>
-                            </div>
-                        </div>
-
-                        <label class="flex items-center justify-between p-3 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer">
-                            <div>
-                                <p class="text-xs font-semibold text-white">Entrega de Material Crudo Completo</p>
-                                <p class="text-[11px] text-slate-400">Transferencia mediante nube de todos los clips</p>
-                            </div>
-                            <input type="checkbox" id="rawFootage" onchange="calculateQuote()" class="w-5 h-5 accent-blue-500 rounded">
-                        </label>
-                    </div>
-                </section>
-
-                <section class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
-                    <div class="flex items-center gap-2 mb-4">
-                        <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center">5</span>
-                        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Facturación SII, Condiciones & Ajustes</h2>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <label class="block text-xs text-slate-400 mb-1">Documento Tributario (SII Chile)</label>
-                            <select id="taxMode" onchange="calculateQuote()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
-                                <option value="liquido">Valor Líquido Directo (Sin documento / Particular)</option>
-                                <option value="boleta" selected>Boleta de Honorarios Electrónica (+ Retención 15.25%)</option>
-                                <option value="factura_afecta">Factura Electrónica Afecta (+ 19% IVA)</option>
-                                <option value="factura_exenta">Factura Electrónica Exenta (0% IVA)</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs text-slate-400 mb-1">Disponibilidad / Condición Operativa</label>
-                            <select id="scheduleCondition" onchange="calculateQuote()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
-                                <option value="Servicio sujeto a ventana climática favorable (sin lluvia ni viento fuerte).">Estándar (Sujeto a ventana climática)</option>
-                                <option value="Servicio disponible exclusivamente fines de semana (Sábado o Domingo), sujeto a condiciones climáticas.">Solo Fines de Semana (Sábado / Domingo)</option>
-                                <option value="Coordinación flexible lunes a domingo según luz óptima y clima.">Lunes a Domingo (Agenda flexible)</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                        <div>
-                            <label class="block text-xs text-slate-400 mb-1">Ajuste Manual / Descuento ($)</label>
-                            <input type="number" id="customAdjustment" step="5000" value="0" oninput="calculateQuote()" placeholder="Ej: -15000" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-xs text-slate-400 mb-1">Fijar Neto/Líquido Exacto ($)</label>
-                            <input type="number" id="overrideTotal" step="5000" placeholder="Opcional (ej: 120000)" oninput="calculateQuote()" class="w-full bg-slate-950 border border-blue-500/40 rounded-xl px-3.5 py-2 text-sm text-blue-300 focus:outline-none focus:border-blue-400">
-                        </div>
-                        <div>
-                            <label class="block text-xs text-slate-400 mb-1">Validez de Cotización</label>
-                            <select id="validityDays" onchange="calculateQuote()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
-                                <option value="7 días">7 días</option>
-                                <option value="15 días" selected>15 días</option>
-                                <option value="30 días">30 días</option>
-                            </select>
-                        </div>
-                    </div>
+@@ -336,9 +336,9 @@ <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Facturaci
                 </section>
             </div>
 
             <!-- Right Summary Column -->
+            <div class="lg:col-span-6">
+                <div class="sticky top-20 space-y-4">
+            <!-- Right Summary Column (Sticky & Responsive) -->
             <div class="lg:col-span-6 lg:sticky lg:top-20">
                 <div class="space-y-4">
                     <div id="quoteCard" class="bg-white text-slate-900 border border-slate-200 rounded-2xl p-6 shadow-2xl print-container relative overflow-hidden">
-                        
+
                         <!-- Top Decorative Header Bar -->
-                        <div class="absolute top-0 left-0 right-0 h-3 bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-800"></div>
-
-                        <!-- Header: Logo & Title -->
-                        <div class="flex justify-between items-start pt-3 pb-4 border-b border-slate-200 mb-4">
-                            <div class="flex items-center gap-3.5">
-                                <div id="cardLogoContainer" class="w-12 h-12 rounded-xl border border-slate-200 flex items-center justify-center overflow-hidden shrink-0 bg-slate-50 hidden">
-                                    <img id="cardLogoImg" src="" alt="Logo" class="w-full h-full object-contain">
-                                </div>
-                                <div id="cardDefaultLogo" class="w-10 h-10 rounded-xl bg-blue-900 text-white flex items-center justify-center font-bold text-lg shadow-md">
-                                    <i class="fa-solid fa-helicopter"></i>
-                                </div>
-                                <div>
-                                    <h2 class="text-lg font-extrabold text-blue-950 tracking-tight">Cotización de Servicios</h2>
-                                    <p id="summaryBrandSubtitle" class="text-[11px] font-semibold text-blue-700 uppercase tracking-widest mt-0.5">DRONE SERVICE</p>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <p id="summaryDate" class="text-xs font-medium text-slate-500"></p>
-                                <p class="text-[11px] text-slate-400 mt-0.5">Validez: <span id="summaryValidityText">15 días</span></p>
-                            </div>
-                        </div>
-
-                        <!-- Client & Issuer Details Grid -->
-                        <div class="grid grid-cols-2 gap-4 text-xs mb-5 bg-slate-50 p-3.5 rounded-xl border border-slate-100">
-                            <div>
-                                <h3 class="font-bold text-slate-900 uppercase tracking-wider mb-1 text-[11px]">Datos del Cliente</h3>
-                                <p id="summaryClient" class="font-semibold text-slate-800">Por definir</p>
-                                <p id="summaryRut" class="text-slate-500 hidden"></p>
-                                <p id="summaryProjectCategory" class="text-slate-600 mt-0.5">Proyecto: <span id="summaryProjectTitle">Servicio de Dron</span></p>
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-slate-900 uppercase tracking-wider mb-1 text-[11px]">Datos del Emisor</h3>
-                                <p id="summaryProviderName" class="font-semibold text-slate-800">Sebastián Llanos</p>
-                                <p id="summaryProviderTitle" class="text-slate-600">Operador Dron & Videógrafo</p>
-                                <p id="summaryProviderContact" class="text-blue-600 font-medium mt-0.5"></p>
-                            </div>
-                        </div>
-
-                        <!-- Location Pill -->
-                        <div class="mb-4 flex items-center gap-2 text-xs font-medium text-slate-700 bg-blue-50/50 p-2.5 rounded-lg border border-blue-100">
-                            <i class="fa-solid fa-location-dot text-blue-600"></i>
-                            <span>Locación del Servicio: <strong id="summaryLocation" class="text-slate-900">Puerto Montt</strong></span>
-                        </div>
-
-                        <!-- Professional Table for Items -->
-                        <div class="mb-4 overflow-x-auto">
-                            <table class="w-full text-left border-collapse text-xs">
-                                <thead>
-                                    <tr class="bg-blue-900 text-white">
-                                        <th class="py-2 px-3 rounded-l-lg font-semibold">Producto / Descripción</th>
-                                        <th class="py-2 px-3 text-center font-semibold">Cant.</th>
-                                        <th class="py-2 px-3 text-right rounded-r-lg font-semibold">Subtotal</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="summaryTableBody" class="divide-y divide-slate-100 text-slate-700">
-                                    <!-- Populated by JS -->
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <!-- Totals Section -->
+@@ -406,625 +406,4 @@ <h3 class="font-bold text-slate-900 uppercase tracking-wider mb-1 text-[11px]">D
                         <div class="flex justify-end mb-5">
                             <div class="w-60 space-y-1.5 text-xs">
                                 <div class="flex justify-between text-slate-600">
@@ -712,7 +339,6 @@
 
         function adjustCount(id, delta) {
             const input = document.getElementById(id);
-            if (!input) return;
             let val = parseInt(input.value || 0, 10) + delta;
             if (val < 0) val = 0;
             input.value = val;
@@ -745,5 +371,287 @@
             const durationText = document.getElementById('flightDuration').options[document.getElementById('flightDuration').selectedIndex].text;
             const extraBatteries = Number(document.getElementById('extraBatteries').value) || 0;
 
-            const interiorCount = Number(document.getElementById('interiorCount').value) || 0;
-            const reelsCount = Number(document.getElementById
+            const interiorCount = Number(document.getElementById('interiorVideoCount').value) || 0;
+            const reelsCount = Number(document.getElementById('reelsCount').value) || 0;
+            const horizontalCount = Number(document.getElementById('horizontalVideoCount').value) || 0;
+            const photoPackCount = Number(document.getElementById('photoPackCount').value) || 0;
+            const lotLinesCount = Number(document.getElementById('lotLinesCount').value) || 0;
+            const rawFootage = document.getElementById('rawFootage').checked;
+
+            const taxMode = document.getElementById('taxMode').value;
+            const scheduleCondition = document.getElementById('scheduleCondition').value;
+            const customAdjustment = Number(document.getElementById('customAdjustment').value) || 0;
+            const overrideTotal = document.getElementById('overrideTotal').value;
+            const validityDays = document.getElementById('validityDays').value;
+
+            let baseFlight = rates.baseEstab;
+            let droneLabel = 'Operación Dron 4K Estabilizado';
+            if (droneType === 'fpv') { baseFlight = rates.baseFpv; droneLabel = 'Operación Dron FPV Dinámico 4K'; }
+            else if (droneType === 'combo') { baseFlight = rates.baseCombo; droneLabel = 'Operación Combo Dual (Estabilizado + FPV)'; }
+
+            const flightCost = Math.round(baseFlight * durationMultiplier);
+            const interiorCost = interiorCount * (rates.interior || 40000);
+            const batteryCost = extraBatteries * rates.battery;
+            const effectiveKm = roundTrip ? distanceKm * 2 : distanceKm;
+            const travelCost = (effectiveKm * rates.km) + tollsCost;
+
+            const reelsCost = reelsCount * rates.reel;
+            const horizontalCost = horizontalCount * rates.horizontal;
+            const photoCost = photoPackCount * rates.photoPack;
+            const lotLinesCost = lotLinesCount * rates.lotLines;
+            const rawCost = rawFootage ? rates.raw : 0;
+
+            const items = [];
+            items.push({ desc: `${droneLabel} (${durationText.split('(')[0].trim()})`, qty: 1, amount: flightCost });
+            if (interiorCount > 0) items.push({ desc: `Video Interiores / Recorrido con Gimbal`, qty: interiorCount, amount: interiorCost });
+            if (extraBatteries > 0) items.push({ desc: `Batería / Vuelo adicional en terreno`, qty: extraBatteries, amount: batteryCost });
+            if (reelsCount > 0) items.push({ desc: `Reel Vertical 4K editado y musicalizado`, qty: reelsCount, amount: reelsCost });
+            if (horizontalCount > 0) items.push({ desc: `Video Promocional Horizontal 16:9 4K`, qty: horizontalCount, amount: horizontalCost });
+            if (photoPackCount > 0) items.push({ desc: `Pack Fotografías HDR reveladas (Lightroom)`, qty: photoPackCount, amount: photoCost });
+            if (lotLinesCount > 0) items.push({ desc: `Trazado gráfico de deslindes / referencias`, qty: lotLinesCount, amount: lotLinesCount });
+            if (rawFootage) items.push({ desc: `Entrega de material crudo 4K completo`, qty: 1, amount: rawCost });
+            if (travelCost > 0) items.push({ desc: `Logística y traslado (${effectiveKm} km total)`, qty: 1, amount: travelCost });
+            if (customAdjustment !== 0) items.push({ desc: customAdjustment < 0 ? 'Descuento especial aplicado' : 'Ajuste adicional', qty: 1, amount: customAdjustment });
+
+            let netTotal = items.reduce((sum, i) => sum + i.amount, 0);
+            if (overrideTotal !== '' && Number(overrideTotal) > 0) netTotal = Number(overrideTotal);
+
+            let taxAmount = 0;
+            let finalTotal = netTotal;
+            let netLabelText = 'Subtotal Neto';
+            let taxLabelText = '';
+            let totalLabelText = 'TOTAL';
+            let docBadgeText = 'Pago Líquido Directo (Sin documento tributario)';
+
+            const taxRowEl = document.getElementById('taxRow');
+            taxRowEl.classList.remove('hidden');
+
+            if (taxMode === 'liquido') {
+                taxRowEl.classList.add('hidden');
+            } else if (taxMode === 'boleta') {
+                finalTotal = Math.round(netTotal / (1 - 0.1525));
+                taxAmount = finalTotal - netTotal;
+                netLabelText = 'Valor Líquido';
+                taxLabelText = 'Retención Boleta (15.25%)';
+                totalLabelText = 'TOTAL BRUTO';
+                docBadgeText = 'Incluye Boleta de Honorarios';
+            } else if (taxMode === 'factura_afecta') {
+                taxAmount = Math.round(netTotal * 0.19);
+                finalTotal = netTotal + taxAmount;
+                netLabelText = 'Subtotal Neto';
+                taxLabelText = 'IVA (19%)';
+                totalLabelText = 'TOTAL A PAGAR';
+                docBadgeText = 'Incluye Factura Afecta (+19% IVA)';
+            } else if (taxMode === 'factura_exenta') {
+                taxAmount = 0;
+                finalTotal = netTotal;
+                netLabelText = 'Subtotal Exento';
+                taxLabelText = 'IVA Exento (0%)';
+                totalLabelText = 'TOTAL';
+                docBadgeText = 'Incluye Factura Exenta';
+            }
+
+            document.getElementById('summaryProjectTitle').textContent = projectName;
+            document.getElementById('summaryProjectCategory').textContent = projectType;
+            document.getElementById('summaryClient').textContent = clientName;
+            const rutEl = document.getElementById('summaryRut');
+            if (clientRut) { rutEl.textContent = `RUT: ${clientRut}`; rutEl.classList.remove('hidden'); }
+            else { rutEl.classList.add('hidden'); }
+
+            document.getElementById('summaryProviderName').textContent = providerProfile.name;
+            document.getElementById('summaryProviderTitle').textContent = providerProfile.title;
+            
+            const contactEl = document.getElementById('summaryProviderContact');
+            const contactText = [providerProfile.phone, providerProfile.social].filter(Boolean).join(' • ');
+            contactEl.textContent = contactText || 'Sin contacto registrado';
+
+            document.getElementById('footerPhone').innerHTML = `<i class="fa-solid fa-phone mr-1 text-blue-600"></i> ${providerProfile.phone || '+56 9 ...'}`;
+            document.getElementById('footerSocial').innerHTML = `<i class="fa-solid fa-globe mr-1 text-blue-600"></i> ${providerProfile.social || '@dronesureno'}`;
+
+            // Card Logo & Brand Subtitle rendering (Removed Cotidron text completely)
+            const cardLogoContainer = document.getElementById('cardLogoContainer');
+            const cardLogoImg = document.getElementById('cardLogoImg');
+            const cardDefaultLogo = document.getElementById('cardDefaultLogo');
+            const brandSubtitle = document.getElementById('summaryBrandSubtitle');
+
+            brandSubtitle.textContent = (providerProfile.title || providerProfile.name).toUpperCase();
+
+            if (providerProfile.logo && providerProfile.logo.trim() !== '') {
+                cardLogoImg.src = providerProfile.logo.trim();
+                cardLogoContainer.classList.remove('hidden');
+                cardDefaultLogo.classList.add('hidden');
+            } else {
+                cardLogoContainer.classList.add('hidden');
+                cardDefaultLogo.classList.remove('hidden');
+            }
+
+            document.getElementById('summaryLocation').textContent = locationName;
+            document.getElementById('summaryValidityText').textContent = validityDays;
+
+            const tableBody = document.getElementById('summaryTableBody');
+            tableBody.innerHTML = items.map(item => `
+                <tr class="hover:bg-slate-50">
+                    <td class="py-2.5 px-3 font-medium text-slate-800">${item.desc}</td>
+                    <td class="py-2.5 px-3 text-center text-slate-600">${item.qty}</td>
+                    <td class="py-2.5 px-3 text-right font-semibold text-slate-900">${formatCLP(item.amount)}</td>
+                </tr>
+            `).join('');
+
+            document.getElementById('netLabel').textContent = netLabelText;
+            document.getElementById('summaryNet').textContent = formatCLP(netTotal);
+            document.getElementById('taxLabel').textContent = taxLabelText;
+            document.getElementById('summaryTax').textContent = formatCLP(taxAmount);
+            document.getElementById('totalLabel').textContent = totalLabelText;
+            document.getElementById('docBadge').textContent = docBadgeText;
+            document.getElementById('summaryTotal').textContent = formatCLP(finalTotal);
+
+            document.getElementById('summarySchedule').textContent = `• ${scheduleCondition}`;
+
+            currentQuoteData = {
+                clientName, clientRut, projectName, projectType, locationName,
+                items, netTotal, taxAmount, finalTotal, taxMode,
+                netLabelText, taxLabelText, totalLabelText, docBadgeText,
+                scheduleCondition, validityDays, 
+                providerName: providerProfile.name, providerTitle: providerProfile.title,
+                providerPhone: providerProfile.phone, providerSocial: providerProfile.social
+            };
+        }
+
+        function copyWhatsAppText() {
+            const d = currentQuoteData;
+            const lines = [];
+            lines.push(`🚁 *${d.providerName.toUpperCase()} | COTIZACIÓN SERVICIO*`);
+            lines.push(`📍 *Locación:* ${d.locationName}`);
+            lines.push(`👤 *Cliente:* ${d.clientName}${d.clientRut ? ` (RUT: ${d.clientRut})` : ''}`);
+            lines.push(`🎬 *Proyecto:* ${d.projectName}`);
+            lines.push(``);
+            lines.push(`*DETALLE DEL SERVICIO:*`);
+            d.items.forEach(item => { lines.push(`✅ ${item.desc} (${item.qty}): *${formatCLP(item.amount)}*`); });
+            lines.push(``);
+            if (d.taxMode === 'liquido') {
+                lines.push(`💰 *VALOR TOTAL LÍQUIDO:* *${formatCLP(d.finalTotal)}*`);
+            } else {
+                lines.push(`💵 *${d.netLabelText}:*${formatCLP(d.netTotal)}`);
+                lines.push(`🧾 *${d.taxLabelText}:*${formatCLP(d.taxAmount)}`);
+                lines.push(`💰 *${d.totalLabelText.toUpperCase()}:* *${formatCLP(d.finalTotal)}*`);
+                lines.push(`_(${d.docBadgeText})_`);
+            }
+            lines.push(``);
+            lines.push(`*CONDICIONES:*`);
+            lines.push(`• ${d.scheduleCondition}`);
+            lines.push(`• Reserva con 50% de abono y 50% contra entrega.`);
+            lines.push(`• Validez de la oferta: ${d.validityDays}.`);
+            lines.push(``);
+            lines.push(`Quedo atento a cualquier duda o ajuste que necesites. ¡Saludos!`);
+            lines.push(`*${d.providerName}* | ${d.providerTitle}`);
+            if (d.providerPhone) lines.push(`📞 ${d.providerPhone}`);
+            if (d.providerSocial) lines.push(`🌐 Portafolio/Redes: ${d.providerSocial}`);
+
+            navigator.clipboard.writeText(lines.join('\n')).then(() => {
+                const toast = document.getElementById('toast');
+                toast.classList.remove('hidden');
+                setTimeout(() => toast.classList.add('hidden'), 3500);
+            });
+        }
+
+        function resetForm() {
+            document.getElementById('clientName').value = '';
+            document.getElementById('clientRut').value = '';
+            document.getElementById('projectName').value = '';
+            document.getElementById('locationPreset').selectedIndex = 0;
+            applyLocationPreset();
+            document.getElementById('extraBatteries').value = 0;
+            document.getElementById('interiorVideoCount').value = 0;
+            document.getElementById('reelsCount').value = 1;
+            document.getElementById('horizontalVideoCount').value = 0;
+            document.getElementById('photoPackCount').value = 1;
+            document.getElementById('lotLinesCount').value = 0;
+            document.getElementById('rawFootage').checked = false;
+            document.getElementById('customAdjustment').value = 0;
+            document.getElementById('overrideTotal').value = '';
+            calculateQuote();
+        }
+
+        function renderChecklist() {
+            const container = document.getElementById('checklistContainer');
+            const saved = JSON.parse(localStorage.getItem('cotidronChecklistState')) || {};
+            container.innerHTML = checklistData.map(item => `
+                <label class="flex items-start gap-3.5 p-3.5 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer hover:border-slate-700 transition">
+                    <input type="checkbox" id="${item.id}" ${saved[item.id] ? 'checked' : ''} onchange="saveChecklistState()" class="w-5 h-5 mt-0.5 accent-blue-500 rounded">
+                    <div>
+                        <p class="text-sm font-semibold text-white">${item.title}</p>
+                        <p class="text-xs text-slate-400 mt-0.5">${item.desc}</p>
+                    </div>
+                </label>
+            `).join('');
+        }
+
+        function saveChecklistState() {
+            const state = {};
+            checklistData.forEach(item => { state[item.id] = document.getElementById(item.id).checked; });
+            localStorage.setItem('cotidronChecklistState', JSON.stringify(state));
+        }
+
+        function resetChecklist() {
+            localStorage.removeItem('cotidronChecklistState');
+            renderChecklist();
+        }
+
+        function renderMemoryList() {
+            const container = document.getElementById('memoryListContainer');
+            if (memoryItems.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500 col-span-2 text-center py-6">No hay predios guardados todavía.</p>`;
+                return;
+            }
+            container.innerHTML = memoryItems.map(m => `
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-2 relative">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-sm font-bold text-white">${m.title}</h3>
+                        <button onclick="deleteMemoryItem(${m.id})" class="text-slate-500 hover:text-red-400"><i class="fa-solid fa-trash text-xs"></i></button>
+                    </div>
+                    <p class="text-xs text-blue-400"><i class="fa-solid fa-phone mr-1"></i> ${m.contact || 'Sin contacto'}</p>
+                    <p class="text-xs text-slate-400"><i class="fa-solid fa-location-crosshairs mr-1"></i> ${m.coords || 'Sin coordenadas'}</p>
+                    <p class="text-xs text-slate-300 bg-slate-900 p-2.5 rounded-lg border border-slate-800/80 mt-1"><strong class="text-slate-400">Notas:</strong> ${m.notes}</p>
+                </div>
+            `).join('');
+        }
+
+        function openMemoryModal() {
+            document.getElementById('memTitle').value = '';
+            document.getElementById('memContact').value = '';
+            document.getElementById('memCoords').value = '';
+            document.getElementById('memNotes').value = '';
+            toggleModal('memoryModal');
+        }
+
+        function saveMemoryItem() {
+            const title = document.getElementById('memTitle').value.trim();
+            if (!title) return alert('Ingresa un nombre para el predio');
+            const newItem = {
+                id: Date.now(),
+                title,
+                contact: document.getElementById('memContact').value.trim(),
+                coords: document.getElementById('memCoords').value.trim(),
+                notes: document.getElementById('memNotes').value.trim()
+            };
+            memoryItems.unshift(newItem);
+            localStorage.setItem('cotidronMemory', JSON.stringify(memoryItems));
+            toggleModal('memoryModal');
+            renderMemoryList();
+        }
+
+        function deleteMemoryItem(id) {
+            memoryItems = memoryItems.filter(m => m.id !== id);
+            localStorage.setItem('cotidronMemory', JSON.stringify(memoryItems));
+            renderMemoryList();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const today = new Date().toLocaleDateString('es-CL', { day: '2-digit', month: 'short', year: 'numeric' });
+            document.getElementById('summaryDate').textContent = today;
+            updateNavbarLogo();
+            calculateQuote();
+        });
+    </script>
+</body>
+</html>
