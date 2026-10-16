@@ -813,21 +813,21 @@
             document.getElementById('footerPhone').innerHTML = `<i class="fa-solid fa-phone mr-1 text-blue-600"></i> ${providerProfile.phone || '+56 9 ...'}`;
             document.getElementById('footerSocial').innerHTML = `<i class="fa-solid fa-globe mr-1 text-blue-600"></i> ${providerProfile.social || '@dronesureno'}`;
 
-            // Card Logo rendering (Replacing Cotidron header with user logo)
+            // Card Logo & Brand Subtitle rendering (Removed hardcoded Cotidron)
             const cardLogoContainer = document.getElementById('cardLogoContainer');
             const cardLogoImg = document.getElementById('cardLogoImg');
             const cardDefaultLogo = document.getElementById('cardDefaultLogo');
             const brandSubtitle = document.getElementById('summaryBrandSubtitle');
 
+            brandSubtitle.textContent = (providerProfile.title || providerProfile.name).toUpperCase();
+
             if (providerProfile.logo && providerProfile.logo.trim() !== '') {
                 cardLogoImg.src = providerProfile.logo.trim();
                 cardLogoContainer.classList.remove('hidden');
                 cardDefaultLogo.classList.add('hidden');
-                brandSubtitle.textContent = providerProfile.name.toUpperCase();
             } else {
                 cardLogoContainer.classList.add('hidden');
                 cardDefaultLogo.classList.remove('hidden');
-                brandSubtitle.textContent = providerProfile.name.toUpperCase();
             }
 
             document.getElementById('summaryLocation').textContent = locationName;
