@@ -712,6 +712,7 @@
 
         function adjustCount(id, delta) {
             const input = document.getElementById(id);
+            if (!input) return;
             let val = parseInt(input.value || 0, 10) + delta;
             if (val < 0) val = 0;
             input.value = val;
@@ -781,7 +782,7 @@
             if (reelsCount > 0) items.push({ desc: `Reel Vertical 4K editado y musicalizado`, qty: reelsCount, amount: reelsCost });
             if (horizontalCount > 0) items.push({ desc: `Video Promocional Horizontal 16:9 4K`, qty: horizontalCount, amount: horizontalCost });
             if (photoPackCount > 0) items.push({ desc: `Pack Fotografías HDR reveladas (Lightroom)`, qty: photoPackCount, amount: photoCost });
-            if (lotLinesCount > 0) items.push({ desc: `Trazado gráfico de deslindes / referencias`, qty: lotLinesCount, amount: lotLinesCount });
+            if (lotLinesCount > 0) items.push({ desc: `Trazado gráfico de deslindes / referencias`, qty: lotLinesCount, amount: lotLinesCost });
             if (rawFootage) items.push({ desc: `Entrega de material crudo 4K completo`, qty: 1, amount: rawCost });
             if (travelCost > 0) items.push({ desc: `Logística y traslado (${effectiveKm} km total)`, qty: 1, amount: travelCost });
             if (customAdjustment !== 0) items.push({ desc: customAdjustment < 0 ? 'Descuento especial aplicado' : 'Ajuste adicional', qty: 1, amount: customAdjustment });
