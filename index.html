@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cotidron - Cotizador de Servicios de Dron & Videografía</title>
+    <title>Cotidron - Cotizador y Operaciones de Dron</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -11,69 +11,80 @@
         body { font-family: 'Inter', sans-serif; }
         @media print {
             .no-print { display: none !important; }
-            .print-only { display: block !important; }
-            body { background: white !important; color: black !important; }
-            .print-card { box-shadow: none !important; border: 1px solid #e5e7eb !important; }
+            body { background: white !important; color: #0f172a !important; }
+            .print-container { width: 100% !important; max-width: 100% !important; padding: 0 !important; margin: 0 !important; box-shadow: none !important; border: none !important; }
         }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen">
 
-    <!-- Top Navbar -->
-    <header class="bg-slate-900/90 backdrop-blur border-b border-slate-800 sticky top-0 z-30 no-print">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap justify-between items-center gap-3">
+    <!-- Top Navbar (No Print) -->
+    <header class="bg-slate-900/95 backdrop-blur border-b border-slate-800 sticky top-0 z-30 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap justify-between items-center gap-3">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-sky-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-sky-500/20">
-                    <i class="fa-solid fa-helicopter text-white text-lg"></i>
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center shadow-lg shadow-blue-500/20 overflow-hidden">
+                    <img id="navLogoImg" src="" alt="Logo" class="w-full h-full object-cover hidden">
+                    <i id="navLogoIcon" class="fa-solid fa-helicopter text-white text-lg"></i>
                 </div>
                 <div>
-                    <h1 class="text-lg font-bold tracking-tight text-white">Cotidron <span class="text-sky-400 text-xs font-semibold px-2 py-0.5 bg-sky-500/10 border border-sky-500/20 rounded-full ml-1">Nacional</span></h1>
-                    <p class="text-xs text-slate-400">Cotizador Dron, FPV & Post-Producción</p>
+                    <h1 class="text-base font-bold tracking-tight text-white">Cotidron <span class="text-blue-400 text-[10px] font-semibold px-2 py-0.5 bg-blue-500/10 border border-blue-500/20 rounded-full ml-1">Pro Terreno</span></h1>
+                    <p class="text-[11px] text-slate-400">Cotizaciones, Checklist & Memoria Operativa</p>
                 </div>
             </div>
-            <div class="flex items-center gap-2">
-                <button onclick="toggleModal('providerModal')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-2 rounded-lg border border-slate-700 transition flex items-center gap-2">
-                    <i class="fa-solid fa-user-gear text-sky-400"></i> Mi Perfil / Prestador
-                </button>
-                <button onclick="toggleModal('ratesModal')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-2 rounded-lg border border-slate-700 transition flex items-center gap-2">
-                    <i class="fa-solid fa-sliders text-sky-400"></i> Tarifas Base
-                </button>
-                <button onclick="resetForm()" class="text-xs bg-slate-800 hover:bg-red-950/50 hover:text-red-300 text-slate-300 px-3 py-2 rounded-lg border border-slate-700 transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-rotate-left"></i> Limpiar
-                </button>
+
+            <!-- Tab Navigation & Configs -->
+            <div class="flex items-center gap-2 flex-wrap">
+                <div class="bg-slate-950 p-1 rounded-xl border border-slate-800 flex items-center gap-1">
+                    <button onclick="switchTab('quote')" id="tabBtnQuote" class="text-xs px-3 py-1.5 rounded-lg font-medium transition bg-blue-600 text-white flex items-center gap-1.5">
+                        <i class="fa-solid fa-calculator"></i> Cotizador
+                    </button>
+                    <button onclick="switchTab('checklist')" id="tabBtnChecklist" class="text-xs px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white flex items-center gap-1.5">
+                        <i class="fa-solid fa-list-check"></i> Checklist Vuelo
+                    </button>
+                    <button onclick="switchTab('memory')" id="tabBtnMemory" class="text-xs px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white flex items-center gap-1.5">
+                        <i class="fa-solid fa-map-location-dot"></i> Memoria Predios
+                    </button>
+                </div>
+
+                <div class="flex items-center gap-1.5">
+                    <button onclick="toggleModal('providerModal')" title="Mi Perfil" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 p-2 rounded-lg border border-slate-700 transition">
+                        <i class="fa-solid fa-user-gear text-blue-400"></i>
+                    </button>
+                    <button onclick="toggleModal('ratesModal')" title="Tarifas Base" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 p-2 rounded-lg border border-slate-700 transition">
+                        <i class="fa-solid fa-sliders text-blue-400"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </header>
 
     <!-- Main Container -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-            <!-- Left Column: Configurator (7 cols) -->
-            <div class="lg:col-span-7 space-y-6 no-print">
-
-                <!-- 1. Datos del Cliente y Proyecto -->
+        <!-- TAB 1: COTIZADOR -->
+        <div id="tabQuote" class="tab-content grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div class="lg:col-span-6 space-y-6 no-print">
                 <section class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
                     <div class="flex items-center gap-2 mb-4">
-                        <span class="w-6 h-6 rounded-full bg-sky-500/20 text-sky-400 text-xs font-bold flex items-center justify-center">1</span>
+                        <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center">1</span>
                         <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Datos del Cliente & Proyecto</h2>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs text-slate-400 mb-1">Cliente / Empresa (Razón Social)</label>
-                            <input type="text" id="clientName" oninput="calculateQuote()" placeholder="Ej: Inmobiliaria Sur SpA" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500">
+                            <input type="text" id="clientName" oninput="calculateQuote()" placeholder="Ej: María López" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
                         </div>
                         <div>
                             <label class="block text-xs text-slate-400 mb-1">RUT Empresa / Cliente (Opcional)</label>
-                            <input type="text" id="clientRut" oninput="calculateQuote()" placeholder="Ej: 76.123.456-7" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500">
+                            <input type="text" id="clientRut" oninput="calculateQuote()" placeholder="Ej: 76.123.456-7" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
                         </div>
                         <div>
                             <label class="block text-xs text-slate-400 mb-1">Nombre del Proyecto / Predio</label>
-                            <input type="text" id="projectName" oninput="calculateQuote()" placeholder="Ej: Loteo Mirador" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500">
+                            <input type="text" id="projectName" oninput="calculateQuote()" placeholder="Ej: Loteo Mirador" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
                         </div>
                         <div>
                             <label class="block text-xs text-slate-400 mb-1">Categoría de Servicio</label>
-                            <select id="projectType" onchange="calculateQuote()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500">
+                            <select id="projectType" onchange="calculateQuote()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
                                 <option value="Parcelas / Inmobiliaria">Parcelas / Loteos / Inmobiliaria</option>
                                 <option value="Turismo / Cabañas / Hotelería">Turismo / Cabañas / Hotelería</option>
                                 <option value="Comercial / Corporativo / Industrial">Comercial / Corporativo / Marítimo</option>
@@ -84,20 +95,19 @@
                     </div>
                 </section>
 
-                <!-- 2. Ubicación y Logística -->
                 <section class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center gap-2">
-                            <span class="w-6 h-6 rounded-full bg-sky-500/20 text-sky-400 text-xs font-bold flex items-center justify-center">2</span>
+                            <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center">2</span>
                             <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Ruta y Logística</h2>
                         </div>
-                        <span class="text-xs text-sky-400 bg-sky-500/10 px-2.5 py-1 rounded-full border border-sky-500/20">Cobertura Nacional</span>
+                        <span class="text-xs text-blue-400 bg-blue-500/10 px-2.5 py-1 rounded-full border border-blue-500/20">Cobertura Nacional</span>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                         <div>
                             <label class="block text-xs text-slate-400 mb-1">Destino Rápido (Preset)</label>
-                            <select id="locationPreset" onchange="applyLocationPreset()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500">
+                            <select id="locationPreset" onchange="applyLocationPreset()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
                                 <option value="0|0|Puerto Montt Urbano">Puerto Montt Urbano / Local (0 km)</option>
                                 <option value="20|0|Alerce / Chamiza">Alerce / Chamiza (~20 km)</option>
                                 <option value="22|3500|Puerto Varas / Llanquihue">Puerto Varas / Llanquihue (~22 km + Peaje)</option>
@@ -110,47 +120,46 @@
                         </div>
                         <div>
                             <label class="block text-xs text-slate-400 mb-1">Nombre Específico de Locación</label>
-                            <input type="text" id="customLocationName" oninput="calculateQuote()" value="Puerto Montt Urbano" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500">
+                            <input type="text" id="customLocationName" oninput="calculateQuote()" value="Puerto Montt Urbano" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
                         <div>
                             <label class="block text-xs text-slate-400 mb-1">Distancia Solo Ida (Km)</label>
-                            <input type="number" id="distanceKm" min="0" value="0" oninput="calculateQuote()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-sky-500">
+                            <input type="number" id="distanceKm" min="0" value="0" oninput="calculateQuote()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
                         </div>
                         <div>
                             <label class="block text-xs text-slate-400 mb-1">Peajes / Viático ($)</label>
-                            <input type="number" id="tollsCost" min="0" step="1000" value="0" oninput="calculateQuote()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-sky-500">
+                            <input type="number" id="tollsCost" min="0" step="1000" value="0" oninput="calculateQuote()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
                         </div>
                         <label class="flex items-center gap-2.5 bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 cursor-pointer select-none">
-                            <input type="checkbox" id="roundTrip" checked onchange="calculateQuote()" class="w-4 h-4 accent-sky-500 rounded">
+                            <input type="checkbox" id="roundTrip" checked onchange="calculateQuote()" class="w-4 h-4 accent-blue-500 rounded">
                             <span class="text-xs text-slate-300 font-medium">Calcular Ida y Vuelta (x2)</span>
                         </label>
                     </div>
                 </section>
 
-                <!-- 3. Operación de Vuelo en Terreno -->
                 <section class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
                     <div class="flex items-center gap-2 mb-4">
-                        <span class="w-6 h-6 rounded-full bg-sky-500/20 text-sky-400 text-xs font-bold flex items-center justify-center">3</span>
+                        <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center">3</span>
                         <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Operación de Vuelo & Captura</h2>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
                         <label class="cursor-pointer">
                             <input type="radio" name="droneType" value="estabilizado" checked onchange="calculateQuote()" class="peer hidden">
-                            <div class="p-3.5 rounded-xl border border-slate-800 bg-slate-950 peer-checked:border-sky-500 peer-checked:bg-sky-500/10 transition">
+                            <div class="p-3.5 rounded-xl border border-slate-800 bg-slate-950 peer-checked:border-blue-500 peer-checked:bg-blue-500/10 transition">
                                 <div class="flex justify-between items-center mb-1">
                                     <span class="text-xs font-bold text-white">Dron 4K Estabilizado</span>
-                                    <i class="fa-solid fa-camera text-sky-400 text-xs"></i>
+                                    <i class="fa-solid fa-camera text-blue-400 text-xs"></i>
                                 </div>
                                 <p class="text-[11px] text-slate-400">Tomas cinemáticas suaves, panorámicas y fotografía HDR/RAW.</p>
                             </div>
                         </label>
                         <label class="cursor-pointer">
                             <input type="radio" name="droneType" value="fpv" onchange="calculateQuote()" class="peer hidden">
-                            <div class="p-3.5 rounded-xl border border-slate-800 bg-slate-950 peer-checked:border-sky-500 peer-checked:bg-sky-500/10 transition">
+                            <div class="p-3.5 rounded-xl border border-slate-800 bg-slate-950 peer-checked:border-blue-500 peer-checked:bg-blue-500/10 transition">
                                 <div class="flex justify-between items-center mb-1">
                                     <span class="text-xs font-bold text-white">Dron FPV Dinámico</span>
                                     <i class="fa-solid fa-bolt text-amber-400 text-xs"></i>
@@ -160,7 +169,7 @@
                         </label>
                         <label class="cursor-pointer">
                             <input type="radio" name="droneType" value="combo" onchange="calculateQuote()" class="peer hidden">
-                            <div class="p-3.5 rounded-xl border border-slate-800 bg-slate-950 peer-checked:border-sky-500 peer-checked:bg-sky-500/10 transition">
+                            <div class="p-3.5 rounded-xl border border-slate-800 bg-slate-950 peer-checked:border-blue-500 peer-checked:bg-blue-500/10 transition">
                                 <div class="flex justify-between items-center mb-1">
                                     <span class="text-xs font-bold text-white">Combo Dual (Estab + FPV)</span>
                                     <i class="fa-solid fa-layer-group text-indigo-400 text-xs"></i>
@@ -173,7 +182,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs text-slate-400 mb-1">Jornada / Tiempo en Terreno</label>
-                            <select id="flightDuration" onchange="calculateQuote()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500">
+                            <select id="flightDuration" onchange="calculateQuote()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
                                 <option value="1">Sesión Puntual (Hasta 1.5 hrs / 1-2 baterías)</option>
                                 <option value="1.5">Media Jornada (Hasta 3.5 hrs en terreno)</option>
                                 <option value="2.3">Jornada Completa (Día de rodaje / múltiples horas de luz)</option>
@@ -185,7 +194,7 @@
                                 <span class="text-xs text-slate-300">Baterías extra a la base</span>
                                 <div class="flex items-center gap-2">
                                     <button type="button" onclick="adjustCount('extraBatteries', -1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">-</button>
-                                    <input type="number" id="extraBatteries" value="0" min="0" readonly class="w-8 text-center bg-transparent text-sm font-bold text-sky-400">
+                                    <input type="number" id="extraBatteries" value="0" min="0" readonly class="w-8 text-center bg-transparent text-sm font-bold text-blue-400">
                                     <button type="button" onclick="adjustCount('extraBatteries', 1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">+</button>
                                 </div>
                             </div>
@@ -193,10 +202,9 @@
                     </div>
                 </section>
 
-                <!-- 4. Entregables y Post-Producción -->
                 <section class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
                     <div class="flex items-center gap-2 mb-4">
-                        <span class="w-6 h-6 rounded-full bg-sky-500/20 text-sky-400 text-xs font-bold flex items-center justify-center">4</span>
+                        <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center">4</span>
                         <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Post-Producción & Entregables</h2>
                     </div>
 
@@ -208,7 +216,7 @@
                             </div>
                             <div class="flex items-center gap-2">
                                 <button type="button" onclick="adjustCount('reelsCount', -1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">-</button>
-                                <input type="number" id="reelsCount" value="1" min="0" readonly class="w-8 text-center bg-transparent text-sm font-bold text-sky-400">
+                                <input type="number" id="reelsCount" value="1" min="0" readonly class="w-8 text-center bg-transparent text-sm font-bold text-blue-400">
                                 <button type="button" onclick="adjustCount('reelsCount', 1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">+</button>
                             </div>
                         </div>
@@ -220,7 +228,7 @@
                             </div>
                             <div class="flex items-center gap-2">
                                 <button type="button" onclick="adjustCount('horizontalVideoCount', -1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">-</button>
-                                <input type="number" id="horizontalVideoCount" value="0" min="0" readonly class="w-8 text-center bg-transparent text-sm font-bold text-sky-400">
+                                <input type="number" id="horizontalVideoCount" value="0" min="0" readonly class="w-8 text-center bg-transparent text-sm font-bold text-blue-400">
                                 <button type="button" onclick="adjustCount('horizontalVideoCount', 1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">+</button>
                             </div>
                         </div>
@@ -232,7 +240,7 @@
                             </div>
                             <div class="flex items-center gap-2">
                                 <button type="button" onclick="adjustCount('photoPackCount', -1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">-</button>
-                                <input type="number" id="photoPackCount" value="1" min="0" readonly class="w-8 text-center bg-transparent text-sm font-bold text-sky-400">
+                                <input type="number" id="photoPackCount" value="1" min="0" readonly class="w-8 text-center bg-transparent text-sm font-bold text-blue-400">
                                 <button type="button" onclick="adjustCount('photoPackCount', 1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">+</button>
                             </div>
                         </div>
@@ -244,7 +252,7 @@
                             </div>
                             <div class="flex items-center gap-2">
                                 <button type="button" onclick="adjustCount('lotLinesCount', -1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">-</button>
-                                <input type="number" id="lotLinesCount" value="0" min="0" readonly class="w-8 text-center bg-transparent text-sm font-bold text-sky-400">
+                                <input type="number" id="lotLinesCount" value="0" min="0" readonly class="w-8 text-center bg-transparent text-sm font-bold text-blue-400">
                                 <button type="button" onclick="adjustCount('lotLinesCount', 1)" class="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-bold">+</button>
                             </div>
                         </div>
@@ -254,22 +262,21 @@
                                 <p class="text-xs font-semibold text-white">Entrega de Material Crudo Completo (Tomas sin editar)</p>
                                 <p class="text-[11px] text-slate-400">Transferencia mediante nube de todos los clips 4K grabados en la sesión</p>
                             </div>
-                            <input type="checkbox" id="rawFootage" onchange="calculateQuote()" class="w-5 h-5 accent-sky-500 rounded">
+                            <input type="checkbox" id="rawFootage" onchange="calculateQuote()" class="w-5 h-5 accent-blue-500 rounded">
                         </label>
                     </div>
                 </section>
 
-                <!-- 5. Condiciones, Impuestos y Descuentos -->
                 <section class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl">
                     <div class="flex items-center gap-2 mb-4">
-                        <span class="w-6 h-6 rounded-full bg-sky-500/20 text-sky-400 text-xs font-bold flex items-center justify-center">5</span>
+                        <span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-xs font-bold flex items-center justify-center">5</span>
                         <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Facturación SII, Condiciones & Ajustes</h2>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                         <div>
                             <label class="block text-xs text-slate-400 mb-1">Documento Tributario (SII Chile)</label>
-                            <select id="taxMode" onchange="calculateQuote()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500">
+                            <select id="taxMode" onchange="calculateQuote()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
                                 <option value="liquido">Valor Líquido Directo (Sin documento / Particular)</option>
                                 <option value="boleta" selected>Boleta de Honorarios Electrónica (+ Retención 15.25%)</option>
                                 <option value="factura_afecta">Factura Electrónica Afecta (+ 19% IVA)</option>
@@ -278,7 +285,7 @@
                         </div>
                         <div>
                             <label class="block text-xs text-slate-400 mb-1">Disponibilidad / Condición Operativa</label>
-                            <select id="scheduleCondition" onchange="calculateQuote()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-sky-500">
+                            <select id="scheduleCondition" onchange="calculateQuote()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500">
                                 <option value="Servicio sujeto a ventana climática favorable (sin lluvia ni viento fuerte).">Estándar (Sujeto a ventana climática)</option>
                                 <option value="Servicio disponible exclusivamente fines de semana (Sábado o Domingo), sujeto a condiciones climáticas.">Solo Fines de Semana (Sábado / Domingo)</option>
                                 <option value="Coordinación flexible lunes a domingo según luz óptima y clima.">Lunes a Domingo (Agenda flexible)</option>
@@ -289,15 +296,15 @@
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div>
                             <label class="block text-xs text-slate-400 mb-1">Ajuste Manual / Descuento ($)</label>
-                            <input type="number" id="customAdjustment" step="5000" value="0" oninput="calculateQuote()" placeholder="Ej: -15000" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-sky-500">
+                            <input type="number" id="customAdjustment" step="5000" value="0" oninput="calculateQuote()" placeholder="Ej: -15000" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
                         </div>
                         <div>
                             <label class="block text-xs text-slate-400 mb-1">Fijar Neto/Líquido Exacto ($)</label>
-                            <input type="number" id="overrideTotal" step="5000" placeholder="Opcional (ej: 120000)" oninput="calculateQuote()" class="w-full bg-slate-950 border border-sky-500/40 rounded-xl px-3.5 py-2 text-sm text-sky-300 focus:outline-none focus:border-sky-400">
+                            <input type="number" id="overrideTotal" step="5000" placeholder="Opcional (ej: 120000)" oninput="calculateQuote()" class="w-full bg-slate-950 border border-blue-500/40 rounded-xl px-3.5 py-2 text-sm text-blue-300 focus:outline-none focus:border-blue-400">
                         </div>
                         <div>
                             <label class="block text-xs text-slate-400 mb-1">Validez de Cotización</label>
-                            <select id="validityDays" onchange="calculateQuote()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-sky-500">
+                            <select id="validityDays" onchange="calculateQuote()" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
                                 <option value="7 días">7 días</option>
                                 <option value="15 días" selected>15 días</option>
                                 <option value="30 días">30 días</option>
@@ -307,67 +314,104 @@
                 </section>
             </div>
 
-            <!-- Right Column: Live Quote Summary & Export (5 cols) -->
-            <div class="lg:col-span-5">
-                <div class="sticky top-24 space-y-4">
+            <!-- Right Summary Column (Designed like the clean corporate PDF template) -->
+            <div class="lg:col-span-6">
+                <div class="sticky top-20 space-y-4">
+                    <div id="quoteCard" class="bg-white text-slate-900 border border-slate-200 rounded-2xl p-8 shadow-2xl print-container relative overflow-hidden">
+                        
+                        <!-- Top Decorative Header Bar (Blue Theme) -->
+                        <div class="absolute top-0 left-0 right-0 h-3 bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-800"></div>
 
-                    <!-- Printable / Preview Card -->
-                    <div id="quoteCard" class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl print-card">
-                        <div class="flex justify-between items-start border-b border-slate-800 pb-4 mb-4">
-                            <div>
-                                <span class="text-[10px] font-bold uppercase tracking-widest text-sky-400 bg-sky-500/10 px-2 py-0.5 rounded">Cotidron • Propuesta Comercial</span>
-                                <h3 id="summaryProjectTitle" class="text-lg font-bold text-white mt-1">Servicio Audiovisual con Dron</h3>
-                                <p id="summaryClient" class="text-xs text-slate-400">Cliente: Por definir</p>
-                                <p id="summaryRut" class="text-[11px] text-slate-500 hidden"></p>
+                        <!-- Header: Logo & Title -->
+                        <div class="flex justify-between items-start pt-3 pb-6 border-b border-slate-200 mb-6">
+                            <div class="flex items-center gap-3">
+                                <div id="cardLogoContainer" class="w-12 h-12 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center overflow-hidden shrink-0 hidden">
+                                    <img id="cardLogoImg" src="" alt="Logo" class="w-full h-full object-cover">
+                                </div>
+                                <div id="cardDefaultLogo" class="w-12 h-12 rounded-xl bg-blue-900 text-white flex items-center justify-center font-bold text-xl shadow-md">
+                                    <i class="fa-solid fa-helicopter"></i>
+                                </div>
+                                <div>
+                                    <h2 class="text-xl font-extrabold text-blue-950 tracking-tight">Cotización de Servicios</h2>
+                                    <p class="text-xs font-semibold text-blue-700 uppercase tracking-widest mt-0.5">Cotidron Pro</p>
+                                </div>
                             </div>
                             <div class="text-right">
-                                <p id="summaryProviderName" class="text-xs font-semibold text-slate-300">Sebastián Llanos</p>
-                                <p id="summaryProviderTitle" class="text-[11px] text-slate-400">Operador Dron & Videógrafo</p>
-                                <p id="summaryProviderContact" class="text-[11px] text-sky-400 mt-0.5"></p>
-                                <p id="summaryDate" class="text-[11px] text-slate-500 mt-1"></p>
+                                <p id="summaryDate" class="text-xs font-medium text-slate-500"></p>
+                                <p class="text-[11px] text-slate-400 mt-0.5">Validez: <span id="summaryValidityText">15 días</span></p>
                             </div>
                         </div>
 
-                        <!-- Location pill -->
-                        <div class="bg-slate-950 border border-slate-800/80 rounded-xl p-3 mb-4 flex items-center justify-between text-xs">
-                            <div class="flex items-center gap-2">
-                                <i class="fa-solid fa-location-dot text-sky-400"></i>
-                                <span id="summaryLocation" class="font-medium text-slate-200">Puerto Montt</span>
+                        <!-- Client & Issuer Details Grid -->
+                        <div class="grid grid-cols-2 gap-6 text-xs mb-8 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                            <div>
+                                <h3 class="font-bold text-slate-900 uppercase tracking-wider mb-1.5 text-[11px]">Datos del Cliente</h3>
+                                <p id="summaryClient" class="font-semibold text-slate-800">Por definir</p>
+                                <p id="summaryRut" class="text-slate-500 hidden"></p>
+                                <p id="summaryProjectCategory" class="text-slate-600 mt-1">Proyecto: <span id="summaryProjectTitle">Servicio de Dron</span></p>
                             </div>
-                            <span id="summaryCategory" class="text-[11px] text-slate-400">Parcelas / Inmobiliaria</span>
+                            <div>
+                                <h3 class="font-bold text-slate-900 uppercase tracking-wider mb-1.5 text-[11px]">Datos del Emisor</h3>
+                                <p id="summaryProviderName" class="font-semibold text-slate-800">Sebastián Llanos</p>
+                                <p id="summaryProviderTitle" class="text-slate-600">Operador Dron & Videógrafo</p>
+                                <p id="summaryProviderContact" class="text-blue-600 font-medium mt-1"></p>
+                            </div>
                         </div>
 
-                        <!-- Itemized list -->
-                        <div class="space-y-2.5 text-xs border-b border-slate-800 pb-4 mb-4" id="summaryItems">
-                            <!-- Populated by JS -->
+                        <!-- Location Pill -->
+                        <div class="mb-6 flex items-center gap-2 text-xs font-medium text-slate-700 bg-blue-50/50 p-3 rounded-lg border border-blue-100">
+                            <i class="fa-solid fa-location-dot text-blue-600"></i>
+                            <span>Locación del Servicio: <strong id="summaryLocation" class="text-slate-900">Puerto Montt</strong></span>
+                        </div>
+
+                        <!-- Professional Table for Items -->
+                        <div class="mb-6 overflow-x-auto">
+                            <table class="w-full text-left border-collapse text-xs">
+                                <thead>
+                                    <tr class="bg-blue-900 text-white">
+                                        <th class="py-2.5 px-3 rounded-l-lg font-semibold">Producto / Descripción</th>
+                                        <th class="py-2.5 px-3 text-center font-semibold">Cant.</th>
+                                        <th class="py-2.5 px-3 text-right rounded-r-lg font-semibold">Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="summaryTableBody" class="divide-y divide-slate-100 text-slate-700">
+                                    <!-- Populated by JS -->
+                                </tbody>
+                            </table>
                         </div>
 
                         <!-- Totals Section -->
-                        <div class="space-y-2 mb-5">
-                            <div class="flex justify-between text-xs text-slate-400">
-                                <span id="netLabel">Valor Neto / Líquido Servicio</span>
-                                <span id="summaryNet" class="font-semibold text-slate-200">$0</span>
-                            </div>
-                            <div id="taxRow" class="flex justify-between text-xs text-amber-400/90">
-                                <span id="taxLabel">Retención Boleta Honorarios (15.25%)</span>
-                                <span id="summaryTax">$0</span>
-                            </div>
-                            <div class="flex justify-between items-baseline pt-2 border-t border-slate-800">
-                                <div>
-                                    <span class="text-sm font-bold text-white" id="totalLabel">Total a Pagar</span>
-                                    <p id="docBadge" class="text-[10px] text-sky-400 font-medium"></p>
+                        <div class="flex justify-end mb-8">
+                            <div class="w-64 space-y-2 text-xs">
+                                <div class="flex justify-between text-slate-600">
+                                    <span id="netLabel">Subtotal Neto</span>
+                                    <span id="summaryNet" class="font-semibold text-slate-900">$0</span>
                                 </div>
-                                <span id="summaryTotal" class="text-2xl font-extrabold text-sky-400">$0</span>
+                                <div id="taxRow" class="flex justify-between text-slate-600">
+                                    <span id="taxLabel">Impuestos (15.25%)</span>
+                                    <span id="summaryTax" class="font-semibold text-slate-900">$0</span>
+                                </div>
+                                <div class="flex justify-between items-center pt-2.5 border-t-2 border-slate-900 text-sm font-extrabold text-blue-950">
+                                    <span id="totalLabel">TOTAL</span>
+                                    <span id="summaryTotal" class="text-lg text-blue-700">$0</span>
+                                </div>
+                                <p id="docBadge" class="text-[10px] text-blue-600 font-medium text-right mt-1"></p>
                             </div>
                         </div>
 
-                        <!-- Conditions Box -->
-                        <div class="bg-slate-950/90 border border-slate-800 rounded-xl p-3.5 text-[11px] text-slate-400 space-y-1.5">
-                            <p class="font-semibold text-slate-300"><i class="fa-solid fa-circle-info text-sky-400 mr-1"></i> Condiciones del Servicio:</p>
-                            <p id="summarySchedule">• Servicio sujeto a ventana climática favorable.</p>
-                            <p>• Reserva de fecha con 50% de abono y 50% contra entrega final.</p>
-                            <p id="summaryValidity">• Cotización válida por 15 días.</p>
+                        <!-- Conditions & Footer info -->
+                        <div class="border-t border-slate-200 pt-5 text-[11px] text-slate-600 space-y-3">
+                            <div>
+                                <h4 class="font-bold text-slate-900 uppercase tracking-wider mb-1">Condiciones del Servicio</h4>
+                                <p id="summarySchedule" class="text-slate-700">• Servicio sujeto a ventana climática favorable.</p>
+                                <p class="text-slate-700">• Reserva de fecha con 50% de abono y 50% contra entrega final.</p>
+                            </div>
+                            <div class="pt-3 border-t border-slate-100 grid grid-cols-2 gap-2 text-slate-500">
+                                <p id="footerPhone"><i class="fa-solid fa-phone mr-1 text-blue-600"></i> +56 9 1234 5678</p>
+                                <p id="footerSocial"><i class="fa-solid fa-globe mr-1 text-blue-600"></i> @dronesureno</p>
+                            </div>
                         </div>
+
                     </div>
 
                     <!-- Action Buttons -->
@@ -375,55 +419,95 @@
                         <button onclick="copyWhatsAppText()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-emerald-600/20 transition flex items-center justify-center gap-2 text-sm">
                             <i class="fa-brands fa-whatsapp text-lg"></i> Copiar para WhatsApp
                         </button>
-                        <button onclick="window.print()" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-sky-600/20 transition flex items-center justify-center gap-2 text-sm">
+                        <button onclick="window.print()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-blue-600/20 transition flex items-center justify-center gap-2 text-sm">
                             <i class="fa-solid fa-file-pdf"></i> Imprimir / Guardar PDF
                         </button>
                     </div>
 
-                    <!-- Toast Alert -->
                     <div id="toast" class="hidden bg-emerald-950/90 border border-emerald-500/40 text-emerald-200 px-4 py-3 rounded-xl text-xs flex items-center gap-2 shadow-lg no-print">
                         <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
                         <span>¡Propuesta copiada al portapapeles! Lista para pegar en WhatsApp.</span>
                     </div>
-
                 </div>
             </div>
-
         </div>
+
+        <!-- TAB 2: CHECKLIST PRE-VUELO -->
+        <div id="tabChecklist" class="tab-content hidden max-w-3xl mx-auto space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-5">
+                    <div>
+                        <h2 class="text-base font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-list-check text-blue-400"></i> Checklist Pre-Vuelo & Seguridad
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-0.5">Verificación obligatoria antes de armar equipo y despegar en terreno.</p>
+                    </div>
+                    <button onclick="resetChecklist()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-700 transition">
+                        Reiniciar Checklist
+                    </button>
+                </div>
+
+                <div class="space-y-4" id="checklistContainer"></div>
+            </div>
+        </div>
+
+        <!-- TAB 3: MEMORIA DE PREDIOS Y CLIENTES -->
+        <div id="tabMemory" class="tab-content hidden max-w-4xl mx-auto space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-5">
+                    <div>
+                        <h2 class="text-base font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-map-location-dot text-blue-400"></i> Memoria de Predios y Notas de Terreno
+                        </h2>
+                        <p class="text-xs text-slate-400 mt-0.5">Guarda coordenadas, puntos de despegue seguros y observaciones clave por cliente.</p>
+                    </div>
+                    <button onclick="openMemoryModal()" class="text-xs bg-blue-600 hover:bg-blue-500 text-white font-semibold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 shadow-lg shadow-blue-600/20">
+                        <i class="fa-solid fa-plus"></i> Nuevo Registro
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="memoryListContainer"></div>
+            </div>
+        </div>
+
     </main>
 
-    <!-- Modal: Provider Profile Settings -->
+    <!-- Modal: Provider Profile -->
     <div id="providerModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden items-center justify-center p-4 no-print">
         <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl">
             <div class="flex justify-between items-center border-b border-slate-800 pb-3 mb-4">
-                <h3 class="text-sm font-bold uppercase tracking-wider text-white">Datos del Prestador / Marca</h3>
+                <h3 class="text-sm font-bold uppercase tracking-wider text-white">Datos del Prestador / Marca & Logo</h3>
                 <button onclick="toggleModal('providerModal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="space-y-3 text-xs">
                 <div>
                     <label class="block text-slate-300 mb-1">Nombre y Apellido / Marca</label>
-                    <input type="text" id="providerNameInput" value="Sebastián Llanos" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-sky-500">
+                    <input type="text" id="providerNameInput" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500">
                 </div>
                 <div>
                     <label class="block text-slate-300 mb-1">Título / Rol Profesional</label>
-                    <input type="text" id="providerTitleInput" value="Operador Dron & Videógrafo" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-sky-500">
+                    <input type="text" id="providerTitleInput" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500">
                 </div>
                 <div>
                     <label class="block text-slate-300 mb-1">Teléfono / WhatsApp</label>
-                    <input type="text" id="providerPhoneInput" value="+56 9 1234 5678" placeholder="Ej: +56 9 1234 5678" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-sky-500">
+                    <input type="text" id="providerPhoneInput" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500">
                 </div>
                 <div>
-                    <label class="block text-slate-300 mb-1">Instagram / Redes / Portafolio (Link o @)</label>
-                    <input type="text" id="providerSocialInput" value="@dronesureno" placeholder="Ej: @tucuenta o instagram.com/..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-sky-500">
+                    <label class="block text-slate-300 mb-1">Instagram / Redes / Portafolio</label>
+                    <input type="text" id="providerSocialInput" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500">
+                </div>
+                <div>
+                    <label class="block text-slate-300 mb-1">URL / Enlace del Logo (Opcional)</label>
+                    <input type="text" id="providerLogoInput" placeholder="Ej: https://imgur.com/tu-logo.png" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500">
                 </div>
             </div>
             <div class="mt-6 flex justify-end gap-2">
-                <button onclick="saveProviderProfile()" class="bg-sky-600 hover:bg-sky-500 text-white text-xs font-semibold px-4 py-2 rounded-lg">Guardar Perfil</button>
+                <button onclick="saveProviderProfile()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-4 py-2 rounded-lg">Guardar Perfil</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal: Base Rates Settings -->
+    <!-- Modal: Base Rates -->
     <div id="ratesModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden items-center justify-center p-4 no-print">
         <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl">
             <div class="flex justify-between items-center border-b border-slate-800 pb-3 mb-4">
@@ -431,85 +515,130 @@
                 <button onclick="toggleModal('ratesModal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="space-y-3 text-xs">
-                <div class="flex justify-between items-center">
-                    <label class="text-slate-300">Vuelo Base Dron 4K Estabilizado</label>
-                    <input type="number" id="rateBaseEstab" step="5000" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white">
-                </div>
-                <div class="flex justify-between items-center">
-                    <label class="text-slate-300">Vuelo Base Dron FPV</label>
-                    <input type="number" id="rateBaseFpv" step="5000" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white">
-                </div>
-                <div class="flex justify-between items-center">
-                    <label class="text-slate-300">Vuelo Base Combo (Estab + FPV)</label>
-                    <input type="number" id="rateBaseCombo" step="5000" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white">
-                </div>
-                <div class="flex justify-between items-center">
-                    <label class="text-slate-300">Batería Adicional</label>
-                    <input type="number" id="rateBattery" step="2000" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white">
-                </div>
-                <div class="flex justify-between items-center">
-                    <label class="text-slate-300">Edición Reel Vertical 4K (c/u)</label>
-                    <input type="number" id="rateReel" step="5000" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white">
-                </div>
-                <div class="flex justify-between items-center">
-                    <label class="text-slate-300">Video Horizontal 16:9 4K (c/u)</label>
-                    <input type="number" id="rateHorizontal" step="5000" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white">
-                </div>
-                <div class="flex justify-between items-center">
-                    <label class="text-slate-300">Pack Fotos HDR Lightroom (c/u)</label>
-                    <input type="number" id="ratePhotoPack" step="5000" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white">
-                </div>
-                <div class="flex justify-between items-center">
-                    <label class="text-slate-300">Trazado Gráfico Deslindes (c/u)</label>
-                    <input type="number" id="rateLotLines" step="5000" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white">
-                </div>
-                <div class="flex justify-between items-center">
-                    <label class="text-slate-300">Entrega Crudos 4K</label>
-                    <input type="number" id="rateRaw" step="5000" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white">
-                </div>
-                <div class="flex justify-between items-center">
-                    <label class="text-slate-300">Costo Traslado por Km ($/Km)</label>
-                    <input type="number" id="rateKm" step="50" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white">
-                </div>
+                <div class="flex justify-between items-center"><label class="text-slate-300">Vuelo Base Dron Estabilizado</label><input type="number" id="rateBaseEstab" step="5000" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white"></div>
+                <div class="flex justify-between items-center"><label class="text-slate-300">Vuelo Base Dron FPV</label><input type="number" id="rateBaseFpv" step="5000" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white"></div>
+                <div class="flex justify-between items-center"><label class="text-slate-300">Vuelo Base Combo</label><input type="number" id="rateBaseCombo" step="5000" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white"></div>
+                <div class="flex justify-between items-center"><label class="text-slate-300">Batería Adicional</label><input type="number" id="rateBattery" step="2000" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white"></div>
+                <div class="flex justify-between items-center"><label class="text-slate-300">Reel Vertical 4K</label><input type="number" id="rateReel" step="5000" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white"></div>
+                <div class="flex justify-between items-center"><label class="text-slate-300">Video Horizontal</label><input type="number" id="rateHorizontal" step="5000" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white"></div>
+                <div class="flex justify-between items-center"><label class="text-slate-300">Pack Fotos HDR</label><input type="number" id="ratePhotoPack" step="5000" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white"></div>
+                <div class="flex justify-between items-center"><label class="text-slate-300">Trazado Deslindes</label><input type="number" id="rateLotLines" step="5000" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white"></div>
+                <div class="flex justify-between items-center"><label class="text-slate-300">Entrega Crudos</label><input type="number" id="rateRaw" step="5000" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white"></div>
+                <div class="flex justify-between items-center"><label class="text-slate-300">Costo por Km ($/Km)</label><input type="number" id="rateKm" step="50" class="w-28 bg-slate-950 border border-slate-800 rounded-lg px-2.5 py-1.5 text-right text-white"></div>
             </div>
             <div class="mt-6 flex justify-end gap-2">
-                <button onclick="saveBaseRates()" class="bg-sky-600 hover:bg-sky-500 text-white text-xs font-semibold px-4 py-2 rounded-lg">Guardar Cambios</button>
+                <button onclick="saveBaseRates()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-4 py-2 rounded-lg">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Memory Form -->
+    <div id="memoryModal" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden items-center justify-center p-4 no-print">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3 mb-4">
+                <h3 class="text-sm font-bold uppercase tracking-wider text-white">Registrar Predio / Zona de Vuelo</h3>
+                <button onclick="toggleModal('memoryModal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="space-y-3 text-xs">
+                <div><label class="block text-slate-300 mb-1">Nombre del Predio / Loteo / Cliente</label><input type="text" id="memTitle" placeholder="Ej: Parcelación Mirador de Llanquihue" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white"></div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div><label class="block text-slate-300 mb-1">Contacto / Teléfono</label><input type="text" id="memContact" placeholder="Ej: Don Carlos +569..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white"></div>
+                    <div><label class="block text-slate-300 mb-1">Coordenadas o Zona</label><input type="text" id="memCoords" placeholder="Ej: -41.47°, -72.93°" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white"></div>
+                </div>
+                <div><label class="block text-slate-300 mb-1">Notas Clave, Obstáculos y Despegue Seguro</label><textarea id="memNotes" rows="3" placeholder="Ej: Despegar junto al camino principal. Evitar sector norte por tendido eléctrico oculto entre árboles." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white"></textarea></div>
+            </div>
+            <div class="mt-6 flex justify-end gap-2">
+                <button onclick="saveMemoryItem()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-4 py-2 rounded-lg">Guardar Registro</button>
             </div>
         </div>
     </div>
 
     <script>
-        const defaultRates = {
-            baseEstab: 45000,
-            baseFpv: 55000,
-            baseCombo: 80000,
-            battery: 15000,
-            reel: 25000,
-            horizontal: 45000,
-            photoPack: 20000,
-            lotLines: 20000,
-            raw: 15000,
-            km: 250
-        };
-
+        const defaultRates = { baseEstab: 45000, baseFpv: 55000, baseCombo: 80000, battery: 15000, reel: 25000, horizontal: 45000, photoPack: 20000, lotLines: 20000, raw: 15000, km: 250 };
         let rates = JSON.parse(localStorage.getItem('cotidronRates')) || { ...defaultRates };
-        let providerProfile = JSON.parse(localStorage.getItem('cotidronProvider')) || {
-            name: "Sebastián Llanos",
-            title: "Operador Dron & Videógrafo",
-            phone: "+56 9 1234 5678",
-            social: "@dronesureno"
-        };
+        let providerProfile = JSON.parse(localStorage.getItem('cotidronProvider')) || { name: "Sebastián Llanos", title: "Operador Dron & Videógrafo", phone: "+56 9 1234 5678", social: "@dronesureno", logo: "" };
+        let memoryItems = JSON.parse(localStorage.getItem('cotidronMemory')) || [
+            { id: 1, title: "Parcelación Mirador de Chinquihue", contact: "Don Roberto +56912345678", coords: "-41.51°, -73.01°", notes: "Despegar junto al camino principal. Precaución con gaviotas y viento racheado desde el canal." }
+        ];
         let currentQuoteData = {};
 
-        function formatCLP(num) {
-            return '$' + Math.round(num).toLocaleString('es-CL');
+        const checklistData = [
+            { id: 'ch1', title: 'Espacio Aéreo y Normativa DGAC', desc: 'Verificar restricciones de zona, CTR, prohibiciones de vuelo o aglomeraciones.' },
+            { id: 'ch2', title: 'Clima y Viento Local', desc: 'Comprobar ausencia de lluvia, neblina y ráfagas de viento dentro de los límites del fabricante.' },
+            { id: 'ch3', title: 'Estado de Baterías (Celdas y Voltaje)', desc: 'Celdas balanceadas al 100%, sin hinchazones y temperatura óptima.' },
+            { id: 'ch4', title: 'Calibración de Brújula y IMU', desc: 'Realizar calibración magnética libre de interferencias metálicas o vehículos.' },
+            { id: 'ch5', title: 'Tarjeta SD y Formato de Grabación', desc: 'Espacio libre suficiente, tarjeta clase V30/U3 en 4K 60fps / D-Log M.' },
+            { id: 'ch6', title: 'Inspección Física de Hélices y Sensores', desc: 'Hélices sin muescas ni trizaduras; lentes y sensores anticolisión limpios.' },
+            { id: 'ch7', title: 'Punto RTH (Return to Home) y Geofence', desc: 'Altitud de retorno configurada sobre los obstáculos más altos de la zona.' }
+        ];
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('tabQuote').classList.add('hidden');
+            document.getElementById('tabChecklist').classList.add('hidden');
+            document.getElementById('tabMemory').classList.add('hidden');
+            
+            document.getElementById('tabBtnQuote').className = "text-xs px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white flex items-center gap-1.5";
+            document.getElementById('tabBtnChecklist').className = "text-xs px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white flex items-center gap-1.5";
+            document.getElementById('tabBtnMemory').className = "text-xs px-3 py-1.5 rounded-lg font-medium transition text-slate-400 hover:text-white flex items-center gap-1.5";
+
+            if (tab === 'quote') {
+                document.getElementById('tabQuote').classList.remove('hidden');
+                document.getElementById('tabBtnQuote').className = "text-xs px-3 py-1.5 rounded-lg font-medium transition bg-blue-600 text-white flex items-center gap-1.5";
+            } else if (tab === 'checklist') {
+                document.getElementById('tabChecklist').classList.remove('hidden');
+                document.getElementById('tabBtnChecklist').className = "text-xs px-3 py-1.5 rounded-lg font-medium transition bg-blue-600 text-white flex items-center gap-1.5";
+                renderChecklist();
+            } else if (tab === 'memory') {
+                document.getElementById('tabMemory').classList.remove('hidden');
+                document.getElementById('tabBtnMemory').className = "text-xs px-3 py-1.5 rounded-lg font-medium transition bg-blue-600 text-white flex items-center gap-1.5";
+                renderMemoryList();
+            }
         }
 
-        function loadProfileIntoModal() {
-            document.getElementById('providerNameInput').value = providerProfile.name;
-            document.getElementById('providerTitleInput').value = providerProfile.title;
-            document.getElementById('providerPhoneInput').value = providerProfile.phone || '';
-            document.getElementById('providerSocialInput').value = providerProfile.social || '';
+        function formatCLP(num) { return '$' + Math.round(num).toLocaleString('es-CL'); }
+
+        function toggleModal(id) {
+            const modal = document.getElementById(id);
+            if (modal.classList.contains('hidden')) {
+                if (id === 'providerModal') {
+                    document.getElementById('providerNameInput').value = providerProfile.name;
+                    document.getElementById('providerTitleInput').value = providerProfile.title;
+                    document.getElementById('providerPhoneInput').value = providerProfile.phone || '';
+                    document.getElementById('providerSocialInput').value = providerProfile.social || '';
+                    document.getElementById('providerLogoInput').value = providerProfile.logo || '';
+                }
+                if (id === 'ratesModal') {
+                    document.getElementById('rateBaseEstab').value = rates.baseEstab;
+                    document.getElementById('rateBaseFpv').value = rates.baseFpv;
+                    document.getElementById('rateBaseCombo').value = rates.baseCombo;
+                    document.getElementById('rateBattery').value = rates.battery;
+                    document.getElementById('rateReel').value = rates.reel;
+                    document.getElementById('rateHorizontal').value = rates.horizontal;
+                    document.getElementById('ratePhotoPack').value = rates.photoPack;
+                    document.getElementById('rateLotLines').value = rates.lotLines;
+                    document.getElementById('rateRaw').value = rates.raw;
+                    document.getElementById('rateKm').value = rates.km;
+                }
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            } else {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        function updateNavbarLogo() {
+            const logoImg = document.getElementById('navLogoImg');
+            const logoIcon = document.getElementById('navLogoIcon');
+            if (providerProfile.logo && providerProfile.logo.trim() !== '') {
+                logoImg.src = providerProfile.logo.trim();
+                logoImg.classList.remove('hidden');
+                logoIcon.classList.add('hidden');
+            } else {
+                logoImg.classList.add('hidden');
+                logoIcon.classList.remove('hidden');
+            }
         }
 
         function saveProviderProfile() {
@@ -517,24 +646,13 @@
                 name: document.getElementById('providerNameInput').value.trim() || 'Sebastián Llanos',
                 title: document.getElementById('providerTitleInput').value.trim() || 'Operador Dron & Videógrafo',
                 phone: document.getElementById('providerPhoneInput').value.trim(),
-                social: document.getElementById('providerSocialInput').value.trim()
+                social: document.getElementById('providerSocialInput').value.trim(),
+                logo: document.getElementById('providerLogoInput').value.trim()
             };
             localStorage.setItem('cotidronProvider', JSON.stringify(providerProfile));
+            updateNavbarLogo();
             toggleModal('providerModal');
             calculateQuote();
-        }
-
-        function loadRatesIntoModal() {
-            document.getElementById('rateBaseEstab').value = rates.baseEstab;
-            document.getElementById('rateBaseFpv').value = rates.baseFpv;
-            document.getElementById('rateBaseCombo').value = rates.baseCombo;
-            document.getElementById('rateBattery').value = rates.battery;
-            document.getElementById('rateReel').value = rates.reel;
-            document.getElementById('rateHorizontal').value = rates.horizontal;
-            document.getElementById('ratePhotoPack').value = rates.photoPack;
-            document.getElementById('rateLotLines').value = rates.lotLines;
-            document.getElementById('rateRaw').value = rates.raw;
-            document.getElementById('rateKm').value = rates.km;
         }
 
         function saveBaseRates() {
@@ -553,19 +671,6 @@
             localStorage.setItem('cotidronRates', JSON.stringify(rates));
             toggleModal('ratesModal');
             calculateQuote();
-        }
-
-        function toggleModal(id) {
-            const modal = document.getElementById(id);
-            if (modal.classList.contains('hidden')) {
-                if (id === 'providerModal') loadProfileIntoModal();
-                if (id === 'ratesModal') loadRatesIntoModal();
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-            } else {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            }
         }
 
         function adjustCount(id, delta) {
@@ -587,7 +692,7 @@
         }
 
         function calculateQuote() {
-            const clientName = document.getElementById('clientName').value.trim() || 'Por definir';
+            const clientName = document.getElementById('clientName').value.trim() || 'María López';
             const clientRut = document.getElementById('clientRut').value.trim();
             const projectName = document.getElementById('projectName').value.trim() || 'Servicio Audiovisual con Dron';
             const projectType = document.getElementById('projectType').value;
@@ -616,13 +721,8 @@
 
             let baseFlight = rates.baseEstab;
             let droneLabel = 'Operación Dron 4K Estabilizado';
-            if (droneType === 'fpv') {
-                baseFlight = rates.baseFpv;
-                droneLabel = 'Operación Dron FPV Dinámico 4K';
-            } else if (droneType === 'combo') {
-                baseFlight = rates.baseCombo;
-                droneLabel = 'Operación Combo Dual (Estabilizado + FPV)';
-            }
+            if (droneType === 'fpv') { baseFlight = rates.baseFpv; droneLabel = 'Operación Dron FPV Dinámico 4K'; }
+            else if (droneType === 'combo') { baseFlight = rates.baseCombo; droneLabel = 'Operación Combo Dual (Estabilizado + FPV)'; }
 
             const flightCost = Math.round(baseFlight * durationMultiplier);
             const batteryCost = extraBatteries * rates.battery;
@@ -636,26 +736,24 @@
             const rawCost = rawFootage ? rates.raw : 0;
 
             const items = [];
-            items.push({ label: `${droneLabel} (${durationText.split('(')[0].trim()})`, amount: flightCost });
-            if (extraBatteries > 0) items.push({ label: `${extraBatteries}x Batería / Vuelo adicional en terreno`, amount: batteryCost });
-            if (reelsCount > 0) items.push({ label: `${reelsCount}x Reel Vertical 4K editado y musicalizado`, amount: reelsCount });
-            if (horizontalCount > 0) items.push({ label: `${horizontalCount}x Video Promocional Horizontal 16:9 4K`, amount: horizontalCost });
-            if (photoPackCount > 0) items.push({ label: `${photoPackCount}x Pack Fotografías HDR reveladas en Lightroom`, amount: photoCost });
-            if (lotLinesCount > 0) items.push({ label: `${lotLinesCount}x Trazado gráfico de deslindes / referencias`, amount: lotLinesCost });
-            if (rawFootage) items.push({ label: `Entrega de material crudo 4K completo`, amount: rawCost });
-            if (travelCost > 0) items.push({ label: `Logística y traslado (${effectiveKm} km total${tollsCost > 0 ? '+ peaje' : ''})`, amount: travelCost });
-            if (customAdjustment !== 0) items.push({ label: customAdjustment < 0 ? 'Descuento especial aplicado' : 'Recargo / Ajuste adicional', amount: customAdjustment });
+            items.push({ desc: `${droneLabel} (${durationText.split('(')[0].trim()})`, qty: 1, amount: flightCost });
+            if (extraBatteries > 0) items.push({ desc: `Batería / Vuelo adicional en terreno`, qty: extraBatteries, amount: batteryCost });
+            if (reelsCount > 0) items.push({ desc: `Reel Vertical 4K editado y musicalizado`, qty: reelsCount, amount: reelsCost });
+            if (horizontalCount > 0) items.push({ desc: `Video Promocional Horizontal 16:9 4K`, qty: horizontalCount, amount: horizontalCost });
+            if (photoPackCount > 0) items.push({ desc: `Pack Fotografías HDR reveladas (Lightroom)`, qty: photoPackCount, amount: photoCost });
+            if (lotLinesCount > 0) items.push({ desc: `Trazado gráfico de deslindes / referencias`, qty: lotLinesCount, amount: lotLinesCost });
+            if (rawFootage) items.push({ desc: `Entrega de material crudo 4K completo`, qty: 1, amount: rawCost });
+            if (travelCost > 0) items.push({ desc: `Logística y traslado (${effectiveKm} km total)`, qty: 1, amount: travelCost });
+            if (customAdjustment !== 0) items.push({ desc: customAdjustment < 0 ? 'Descuento especial aplicado' : 'Ajuste adicional', qty: 1, amount: customAdjustment });
 
             let netTotal = items.reduce((sum, i) => sum + i.amount, 0);
-            if (overrideTotal !== '' && Number(overrideTotal) > 0) {
-                netTotal = Number(overrideTotal);
-            }
+            if (overrideTotal !== '' && Number(overrideTotal) > 0) netTotal = Number(overrideTotal);
 
             let taxAmount = 0;
             let finalTotal = netTotal;
-            let netLabelText = 'Valor Líquido Servicio';
+            let netLabelText = 'Subtotal Neto';
             let taxLabelText = '';
-            let totalLabelText = 'Total a Pagar';
+            let totalLabelText = 'TOTAL';
             let docBadgeText = 'Pago Líquido Directo (Sin documento tributario)';
 
             const taxRowEl = document.getElementById('taxRow');
@@ -666,57 +764,66 @@
             } else if (taxMode === 'boleta') {
                 finalTotal = Math.round(netTotal / (1 - 0.1525));
                 taxAmount = finalTotal - netTotal;
-                netLabelText = 'Valor Líquido (Bolsillo)';
-                taxLabelText = 'Retención Boleta Honorarios SII (15.25%)';
-                totalLabelText = 'Total Bruto Boleta';
-                docBadgeText = 'Incluye Boleta de Honorarios Electrónica';
+                netLabelText = 'Valor Líquido';
+                taxLabelText = 'Retención Boleta (15.25%)';
+                totalLabelText = 'TOTAL BRUTO';
+                docBadgeText = 'Incluye Boleta de Honorarios';
             } else if (taxMode === 'factura_afecta') {
                 taxAmount = Math.round(netTotal * 0.19);
                 finalTotal = netTotal + taxAmount;
-                netLabelText = 'Valor Neto';
+                netLabelText = 'Subtotal Neto';
                 taxLabelText = 'IVA (19%)';
-                totalLabelText = 'Total Bruto a Facturar';
-                docBadgeText = 'Incluye Factura Electrónica Afecta (+19% IVA)';
+                totalLabelText = 'TOTAL A PAGAR';
+                docBadgeText = 'Incluye Factura Afecta (+19% IVA)';
             } else if (taxMode === 'factura_exenta') {
                 taxAmount = 0;
                 finalTotal = netTotal;
-                netLabelText = 'Valor Neto Exento';
+                netLabelText = 'Subtotal Exento';
                 taxLabelText = 'IVA Exento (0%)';
-                totalLabelText = 'Total Factura Exenta';
-                docBadgeText = 'Incluye Factura Electrónica Exenta de IVA';
+                totalLabelText = 'TOTAL';
+                docBadgeText = 'Incluye Factura Exenta';
             }
 
             document.getElementById('summaryProjectTitle').textContent = projectName;
-            document.getElementById('summaryClient').textContent = `Cliente: ${clientName}`;
+            document.getElementById('summaryProjectCategory').textContent = projectType;
+            document.getElementById('summaryClient').textContent = clientName;
             const rutEl = document.getElementById('summaryRut');
-            if (clientRut) {
-                rutEl.textContent = `RUT: ${clientRut}`;
-                rutEl.classList.remove('hidden');
-            } else {
-                rutEl.classList.add('hidden');
-            }
+            if (clientRut) { rutEl.textContent = `RUT: ${clientRut}`; rutEl.classList.remove('hidden'); }
+            else { rutEl.classList.add('hidden'); }
 
             document.getElementById('summaryProviderName').textContent = providerProfile.name;
             document.getElementById('summaryProviderTitle').textContent = providerProfile.title;
             
             const contactEl = document.getElementById('summaryProviderContact');
             const contactText = [providerProfile.phone, providerProfile.social].filter(Boolean).join(' • ');
-            if (contactText) {
-                contactEl.textContent = contactText;
-                contactEl.classList.remove('hidden');
+            contactEl.textContent = contactText || 'Sin contacto registrado';
+
+            document.getElementById('footerPhone').innerHTML = `<i class="fa-solid fa-phone mr-1 text-blue-600"></i> ${providerProfile.phone || '+56 9 ...'}`;
+            document.getElementById('footerSocial').innerHTML = `<i class="fa-solid fa-globe mr-1 text-blue-600"></i> ${providerProfile.social || '@dronesureno'}`;
+
+            // Card Logo rendering
+            const cardLogoContainer = document.getElementById('cardLogoContainer');
+            const cardLogoImg = document.getElementById('cardLogoImg');
+            const cardDefaultLogo = document.getElementById('cardDefaultLogo');
+            if (providerProfile.logo && providerProfile.logo.trim() !== '') {
+                cardLogoImg.src = providerProfile.logo.trim();
+                cardLogoContainer.classList.remove('hidden');
+                cardDefaultLogo.classList.add('hidden');
             } else {
-                contactEl.classList.add('hidden');
+                cardLogoContainer.classList.add('hidden');
+                cardDefaultLogo.classList.remove('hidden');
             }
 
             document.getElementById('summaryLocation').textContent = locationName;
-            document.getElementById('summaryCategory').textContent = projectType;
+            document.getElementById('summaryValidityText').textContent = validityDays;
 
-            const itemsContainer = document.getElementById('summaryItems');
-            itemsContainer.innerHTML = items.map(item => `
-                <div class="flex justify-between items-start gap-2">
-                    <span class="text-slate-300">• ${item.label}</span>
-                    <span class="font-medium text-slate-200 whitespace-nowrap">${formatCLP(item.amount)}</span>
-                </div>
+            const tableBody = document.getElementById('summaryTableBody');
+            tableBody.innerHTML = items.map(item => `
+                <tr class="hover:bg-slate-50">
+                    <td class="py-3 px-3 font-medium text-slate-800">${item.desc}</td>
+                    <td class="py-3 px-3 text-center text-slate-600">${item.qty}</td>
+                    <td class="py-3 px-3 text-right font-semibold text-slate-900">${formatCLP(item.amount)}</td>
+                </tr>
             `).join('');
 
             document.getElementById('netLabel').textContent = netLabelText;
@@ -728,17 +835,14 @@
             document.getElementById('summaryTotal').textContent = formatCLP(finalTotal);
 
             document.getElementById('summarySchedule').textContent = `• ${scheduleCondition}`;
-            document.getElementById('summaryValidity').textContent = `• Cotización válida por ${validityDays}.`;
 
             currentQuoteData = {
                 clientName, clientRut, projectName, projectType, locationName,
                 items, netTotal, taxAmount, finalTotal, taxMode,
                 netLabelText, taxLabelText, totalLabelText, docBadgeText,
                 scheduleCondition, validityDays, 
-                providerName: providerProfile.name, 
-                providerTitle: providerProfile.title,
-                providerPhone: providerProfile.phone,
-                providerSocial: providerProfile.social
+                providerName: providerProfile.name, providerTitle: providerProfile.title,
+                providerPhone: providerProfile.phone, providerSocial: providerProfile.social
             };
         }
 
@@ -751,9 +855,7 @@
             lines.push(`🎬 *Proyecto:* ${d.projectName}`);
             lines.push(``);
             lines.push(`*DETALLE DEL SERVICIO:*`);
-            d.items.forEach(item => {
-                lines.push(`✅ ${item.label}: *${formatCLP(item.amount)}*`);
-            });
+            d.items.forEach(item => { lines.push(`✅ ${item.desc} (${item.qty}): *${formatCLP(item.amount)}*`); });
             lines.push(``);
             if (d.taxMode === 'liquido') {
                 lines.push(`💰 *VALOR TOTAL LÍQUIDO:* *${formatCLP(d.finalTotal)}*`);
@@ -798,9 +900,84 @@
             calculateQuote();
         }
 
+        function renderChecklist() {
+            const container = document.getElementById('checklistContainer');
+            const saved = JSON.parse(localStorage.getItem('cotidronChecklistState')) || {};
+            container.innerHTML = checklistData.map(item => `
+                <label class="flex items-start gap-3.5 p-3.5 bg-slate-950 border border-slate-800 rounded-xl cursor-pointer hover:border-slate-700 transition">
+                    <input type="checkbox" id="${item.id}" ${saved[item.id] ? 'checked' : ''} onchange="saveChecklistState()" class="w-5 h-5 mt-0.5 accent-blue-500 rounded">
+                    <div>
+                        <p class="text-sm font-semibold text-white">${item.title}</p>
+                        <p class="text-xs text-slate-400 mt-0.5">${item.desc}</p>
+                    </div>
+                </label>
+            `).join('');
+        }
+
+        function saveChecklistState() {
+            const state = {};
+            checklistData.forEach(item => { state[item.id] = document.getElementById(item.id).checked; });
+            localStorage.setItem('cotidronChecklistState', JSON.stringify(state));
+        }
+
+        function resetChecklist() {
+            localStorage.removeItem('cotidronChecklistState');
+            renderChecklist();
+        }
+
+        function renderMemoryList() {
+            const container = document.getElementById('memoryListContainer');
+            if (memoryItems.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500 col-span-2 text-center py-6">No hay predios guardados todavía.</p>`;
+                return;
+            }
+            container.innerHTML = memoryItems.map(m => `
+                <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-2 relative">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-sm font-bold text-white">${m.title}</h3>
+                        <button onclick="deleteMemoryItem(${m.id})" class="text-slate-500 hover:text-red-400"><i class="fa-solid fa-trash text-xs"></i></button>
+                    </div>
+                    <p class="text-xs text-blue-400"><i class="fa-solid fa-phone mr-1"></i> ${m.contact || 'Sin contacto'}</p>
+                    <p class="text-xs text-slate-400"><i class="fa-solid fa-location-crosshairs mr-1"></i> ${m.coords || 'Sin coordenadas'}</p>
+                    <p class="text-xs text-slate-300 bg-slate-900 p-2.5 rounded-lg border border-slate-800/80 mt-1"><strong class="text-slate-400">Notas:</strong> ${m.notes}</p>
+                </div>
+            `).join('');
+        }
+
+        function openMemoryModal() {
+            document.getElementById('memTitle').value = '';
+            document.getElementById('memContact').value = '';
+            document.getElementById('memCoords').value = '';
+            document.getElementById('memNotes').value = '';
+            toggleModal('memoryModal');
+        }
+
+        function saveMemoryItem() {
+            const title = document.getElementById('memTitle').value.trim();
+            if (!title) return alert('Ingresa un nombre para el predio');
+            const newItem = {
+                id: Date.now(),
+                title,
+                contact: document.getElementById('memContact').value.trim(),
+                coords: document.getElementById('memCoords').value.trim(),
+                notes: document.getElementById('memNotes').value.trim()
+            };
+            memoryItems.unshift(newItem);
+            localStorage.setItem('cotidronMemory', JSON.stringify(memoryItems));
+            toggleModal('memoryModal');
+            renderMemoryList();
+        }
+
+        function deleteMemoryItem(id) {
+            memoryItems = memoryItems.filter(m => m.id !== id);
+            localStorage.setItem('cotidronMemory', JSON.stringify(memoryItems));
+            renderMemoryList();
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             const today = new Date().toLocaleDateString('es-CL', { day: '2-digit', month: 'short', year: 'numeric' });
             document.getElementById('summaryDate').textContent = today;
+            updateNavbarLogo();
             calculateQuote();
         });
     </script>
