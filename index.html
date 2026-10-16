@@ -323,6 +323,7 @@
                             <div class="text-right">
                                 <p id="summaryProviderName" class="text-xs font-semibold text-slate-300">Sebastián Llanos</p>
                                 <p id="summaryProviderTitle" class="text-[11px] text-slate-400">Operador Dron & Videógrafo</p>
+                                <p id="summaryProviderContact" class="text-[11px] text-sky-400 mt-0.5"></p>
                                 <p id="summaryDate" class="text-[11px] text-slate-500 mt-1"></p>
                             </div>
                         </div>
@@ -407,6 +408,14 @@
                     <label class="block text-slate-300 mb-1">Título / Rol Profesional</label>
                     <input type="text" id="providerTitleInput" value="Operador Dron & Videógrafo" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-sky-500">
                 </div>
+                <div>
+                    <label class="block text-slate-300 mb-1">Teléfono / WhatsApp</label>
+                    <input type="text" id="providerPhoneInput" value="+56 9 1234 5678" placeholder="Ej: +56 9 1234 5678" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-sky-500">
+                </div>
+                <div>
+                    <label class="block text-slate-300 mb-1">Instagram / Redes / Portafolio (Link o @)</label>
+                    <input type="text" id="providerSocialInput" value="@dronesureno" placeholder="Ej: @tucuenta o instagram.com/..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-sky-500">
+                </div>
             </div>
             <div class="mt-6 flex justify-end gap-2">
                 <button onclick="saveProviderProfile()" class="bg-sky-600 hover:bg-sky-500 text-white text-xs font-semibold px-4 py-2 rounded-lg">Guardar Perfil</button>
@@ -486,7 +495,9 @@
         let rates = JSON.parse(localStorage.getItem('cotidronRates')) || { ...defaultRates };
         let providerProfile = JSON.parse(localStorage.getItem('cotidronProvider')) || {
             name: "Sebastián Llanos",
-            title: "Operador Dron & Videógrafo"
+            title: "Operador Dron & Videógrafo",
+            phone: "+56 9 1234 5678",
+            social: "@dronesureno"
         };
         let currentQuoteData = {};
 
@@ -497,12 +508,16 @@
         function loadProfileIntoModal() {
             document.getElementById('providerNameInput').value = providerProfile.name;
             document.getElementById('providerTitleInput').value = providerProfile.title;
+            document.getElementById('providerPhoneInput').value = providerProfile.phone || '';
+            document.getElementById('providerSocialInput').value = providerProfile.social || '';
         }
 
         function saveProviderProfile() {
             providerProfile = {
                 name: document.getElementById('providerNameInput').value.trim() || 'Sebastián Llanos',
-                title: document.getElementById('providerTitleInput').value.trim() || 'Operador Dron & Videógrafo'
+                title: document.getElementById('providerTitleInput').value.trim() || 'Operador Dron & Videógrafo',
+                phone: document.getElementById('providerPhoneInput').value.trim(),
+                social: document.getElementById('providerSocialInput').value.trim()
             };
             localStorage.setItem('cotidronProvider', JSON.stringify(providerProfile));
             toggleModal('providerModal');
@@ -623,10 +638,10 @@
             const items = [];
             items.push({ label: `${droneLabel} (${durationText.split('(')[0].trim()})`, amount: flightCost });
             if (extraBatteries > 0) items.push({ label: `${extraBatteries}x Batería / Vuelo adicional en terreno`, amount: batteryCost });
-            if (reelsCount > 0) items.push({ label: `${reelsCount}x Reel Vertical 4K editado y musicalizado`, amount: reelsCost });
+            if (reelsCount > 0) items.push({ label: `${reelsCount}x Reel Vertical 4K editado y musicalizado`, amount: reelsCount });
             if (horizontalCount > 0) items.push({ label: `${horizontalCount}x Video Promocional Horizontal 16:9 4K`, amount: horizontalCost });
             if (photoPackCount > 0) items.push({ label: `${photoPackCount}x Pack Fotografías HDR reveladas en Lightroom`, amount: photoCost });
-            if (lotLinesCount > 0) items.push({ label: `${lotLinesCount}x Trazado gráfico de deslindes / referencias`, amount: lotLinesCount });
+            if (lotLinesCount > 0) items.push({ label: `${lotLinesCount}x Trazado gráfico de deslindes / referencias`, amount: lotLinesCost });
             if (rawFootage) items.push({ label: `Entrega de material crudo 4K completo`, amount: rawCost });
             if (travelCost > 0) items.push({ label: `Logística y traslado (${effectiveKm} km total${tollsCost > 0 ? '+ peaje' : ''})`, amount: travelCost });
             if (customAdjustment !== 0) items.push({ label: customAdjustment < 0 ? 'Descuento especial aplicado' : 'Recargo / Ajuste adicional', amount: customAdjustment });
@@ -683,6 +698,15 @@
 
             document.getElementById('summaryProviderName').textContent = providerProfile.name;
             document.getElementById('summaryProviderTitle').textContent = providerProfile.title;
+            
+            const contactEl = document.getElementById('summaryProviderContact');
+            const contactText = [providerProfile.phone, providerProfile.social].filter(Boolean).join(' • ');
+            if (contactText) {
+                contactEl.textContent = contactText;
+                contactEl.classList.remove('hidden');
+            } else {
+                contactEl.classList.add('hidden');
+            }
 
             document.getElementById('summaryLocation').textContent = locationName;
             document.getElementById('summaryCategory').textContent = projectType;
@@ -710,7 +734,11 @@
                 clientName, clientRut, projectName, projectType, locationName,
                 items, netTotal, taxAmount, finalTotal, taxMode,
                 netLabelText, taxLabelText, totalLabelText, docBadgeText,
-                scheduleCondition, validityDays, providerName: providerProfile.name, providerTitle: providerProfile.title
+                scheduleCondition, validityDays, 
+                providerName: providerProfile.name, 
+                providerTitle: providerProfile.title,
+                providerPhone: providerProfile.phone,
+                providerSocial: providerProfile.social
             };
         }
 
@@ -743,6 +771,8 @@
             lines.push(``);
             lines.push(`Quedo atento a cualquier duda o ajuste que necesites. ¡Saludos!`);
             lines.push(`*${d.providerName}* | ${d.providerTitle}`);
+            if (d.providerPhone) lines.push(`📞 ${d.providerPhone}`);
+            if (d.providerSocial) lines.push(`🌐 Portafolio/Redes: ${d.providerSocial}`);
 
             navigator.clipboard.writeText(lines.join('\n')).then(() => {
                 const toast = document.getElementById('toast');
